@@ -1,5 +1,5 @@
 import * as BABYLON from 'babylonjs';
-import { ShaderModule } from '../src/shaders'
+import { VertexModule, FragmentModule} from '../src/shaders'
 
 export module MaterialModule {
     export function hexToVec3(hex: string): BABYLON.Vector3 {
@@ -9,8 +9,8 @@ export module MaterialModule {
 
     export function createDefaultMaterial(scene: BABYLON.Scene) {
         let defaultMaterial = new BABYLON.ShaderMaterial("defaultMaterial", scene, {
-            vertexSource: ShaderModule.defaultVertexShader,
-            fragmentSource: ShaderModule.defaultFragmentShader,
+            vertexSource: VertexModule.standard,
+            fragmentSource: FragmentModule.flat,
         },
         {
             attributes: ["position"],
@@ -19,6 +19,19 @@ export module MaterialModule {
 
         return defaultMaterial;
 
+    }
+
+    export function createHeightMapMaterial(scene: BABYLON.Scene) {
+        let heightMapMaterial = new BABYLON.ShaderMaterial("heightMapMaterial", scene, {
+            vertexSource: VertexModule.heightMap,
+            fragmentSource: FragmentModule.heightShading,
+        },
+        {
+            attributes: ["position"],
+            uniforms: ["worldViewProjection", "heightMap", "heightScale"]
+        });
+
+        return heightMapMaterial;
     }
     
 }
