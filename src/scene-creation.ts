@@ -1,5 +1,5 @@
 import * as BABYLON from 'babylonjs'
-import * as SHADERS from './shader-module'
+import { ShaderModule } from '../src/shader-module'
 
 export module SceneCreation {
     export function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
@@ -10,7 +10,13 @@ export module SceneCreation {
         let light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
         light.intensity = 0.7;
 
-    let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
+        let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
+
+        let material = ShaderModule.createDefaultMaterial(scene);
+        ground.material = material;
+
+        let lightBlue = ShaderModule.hexToVec3("#ADD8E6");
+        material.setVector3("color", lightBlue);
 
 
 
