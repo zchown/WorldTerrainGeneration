@@ -28,12 +28,14 @@ export module VertexModule {
         uniform float heightScale;
 
         varying vec3 vPositionW;
+        varying vec2 vUV;
 
         void main() {
+            vUV = uv;
             vPositionW = position;
-            let height = texture2D(heightMap, uv).r * heightScale;
-            let newPosition = position * vec3(0.0, height, 0.0);
-            gl_Position = worldViewProjection * vec4(position, 1.0);
+            float height = texture2D(heightMap, uv).r * heightScale;
+            vec3 newPosition = position + vec3(0.0, height, 0.0);
+            gl_Position = worldViewProjection * vec4(newPosition, 1.0);
         }
     `;
 
