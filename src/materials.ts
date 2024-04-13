@@ -27,11 +27,25 @@ export module MaterialModule {
             fragmentSource: FragmentModule.heightShading,
         },
         {
-            attributes: ["position"],
-            uniforms: ["worldViewProjection", "heightMap", "heightScale"]
+            attributes: ["position", "uv"],
+            uniforms: ["worldViewProjection", "heightScale"],
+            samplers: ["heightMap"]
         });
 
         return heightMapMaterial;
+    }
+
+    export function createHeightMapColorDebug(scene: BABYLON.Scene) {
+        let material = new BABYLON.ShaderMaterial("heightMapDebug", scene, {
+            vertexSource: VertexModule.standard,
+            fragmentSource: FragmentModule.heightDebug,
+        },
+        {
+            attributes: ["position", "uv"],
+            uniforms: ["worldViewProjection", "heightScale"],
+            samplers: ["heightMap"]
+        });   
+        return material;
     }
     
 }

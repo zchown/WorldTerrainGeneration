@@ -13,7 +13,7 @@ export module SceneCreation {
 
         let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
 
-        let material = MaterialModule.createHeightMapMaterial(scene);
+        let material = MaterialModule.createHeightMapColorDebug(scene);
         ground.material = material;
 
         let texture = new BABYLON.Texture("./assets/worldHeightMap.jpg", scene);
@@ -22,6 +22,14 @@ export module SceneCreation {
 
         let lightBlue = MaterialModule.hexToVec3("#ADD8E6");
         material.setVector3("color", lightBlue);
+
+
+        let groundStandard = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
+        groundStandard.position.y = 3;
+        let debug = MaterialModule.createHeightMapColorDebug(scene);
+        debug.setTexture("heightMap", texture);
+
+        groundStandard.material = standard;
 
         return scene;
     };
