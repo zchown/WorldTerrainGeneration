@@ -62,5 +62,18 @@ export module MaterialModule {
         });   
         return material;
     }
-    
+
+    export function createSkyboxMaterial(scene: BABYLON.Scene) {
+        var shaderMaterial = new BABYLON.ShaderMaterial('myMaterial', scene, { 
+            vertexSource: VertexModule.skyboxVert, 
+            fragmentSource: FragmentModule.skyboxFrag,
+        },
+        {
+            attributes: ["position", "normal"], 
+            uniforms: ["world", "view", "projection", "viewPosition"],
+            samplers: ["skyboxTexture"]
+        });
+
+        return shaderMaterial;
+    }
 }

@@ -1,5 +1,3 @@
-import * as BABYLON from 'babylonjs'
-
 export module VertexModule {
     export let standard = `
         precision highp float;
@@ -39,6 +37,33 @@ export module VertexModule {
         }
     `;
 
+    export var skyboxVert = `
+        attribute vec3 position;
+
+        uniform mat4 view;
+        uniform mat4 projection;
+        
+        varying vec3 vPos;
+
+        void main() {
+            vec4 localPosition = vec4(position, 1.); 
+            mat4 skyboxView = view;
+
+            // remove translation data from view matrix
+            skyboxView[3].x = 0.0;
+            skyboxView[3].y = 0.0;
+            skyboxView[3].z = 0.0;
+            vec4 viewPosition  = skyboxView * localPosition;
+            vec4 clipPosition  = projection * viewPosition;
+
+            clipPosition.z = clipPosition.w; // make sure depth is maxed out
+
+            vPos = position.xyz;
+
+            gl_Position = clipPosition;
+        }
+    `;
+
 }
 
 export module FragmentModule {
@@ -71,6 +96,18 @@ export module FragmentModule {
             gl_FragColor = color;
 
         }
+    `;
+
+    export var skyboxFrag= `
+         uniform samplerCube skyboxTexture;
+
+        varying vec3 vPos;
+
+        void main() {
+            vec3 reflectionColor = textureCube(skyboxTexture, vPos).rgb;
+            gl_FragColor = vec4(reflectionColor,1);
+        }
+
     `;
 
 }

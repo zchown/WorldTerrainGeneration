@@ -22,13 +22,16 @@ export module SceneCreation {
 
         let lightBlue = MaterialModule.hexToVec3("#ADD8E6");
         material.setVector3("color", lightBlue);
+        ground.position.y = 0;
+        
+        let skyboxTexture = new BABYLON.CubeTexture("./assets/skybox", scene);
+        let skyboxMaterial = MaterialModule.createSkyboxMaterial(scene);
+        skyboxMaterial.setTexture("skyboxTexture", skyboxTexture);
 
-        // let groundStandard = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
-        // groundStandard.position.y = 3;
-        // let debug = MaterialModule.createHeightMapColorDebug(scene);
-        // debug.setTexture("heightMap", texture);
-        //
-        // groundStandard.material = debug;
+
+        let skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size: 4.0, sideOrientation: BABYLON.Mesh.BACKSIDE}, scene);
+        skybox.material = skyboxMaterial;
+
 
         return scene;
     };
