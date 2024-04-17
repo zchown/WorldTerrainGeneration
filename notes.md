@@ -23,6 +23,7 @@
     # standard vertex and fragment shaders for debugging purposes
     # height map vertex shader that deforms ground based on a height map
     # various shaders for coloring to be able to see height map clearly
+    $ Skybox created
 
 
 ### TODO
@@ -30,8 +31,6 @@
         * application of textures should be based on height and slope of terrain being applied to
         * height is easy as we can use varying position
         * How to do slope? Something to do with normals?
-    # Skybox
-        * Would be nice to have a skybox for our terrain
     # Thickness
         * Not sure if current shaders will work if applied to like a box?
         * how do we create a world thats thick

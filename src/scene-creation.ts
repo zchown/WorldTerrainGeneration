@@ -1,7 +1,6 @@
 import * as BABYLON from 'babylonjs'
 import { MaterialModule } from '../src/materials'
 
-
 export module SceneCreation {
     export function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
         let scene = new BABYLON.Scene(engine);
@@ -12,17 +11,18 @@ export module SceneCreation {
         light.intensity = 0.7;
 
         let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
+        ground.position.y = 0;
+        camera.setTarget(ground.position);
 
         let material = MaterialModule.heightMapTextureColor(scene);
         ground.material = material;
 
         let texture = new BABYLON.Texture("./assets/worldHeightMap.jpg", scene);
         material.setTexture("heightMap", texture);
-        material.setFloat("heightScale", 0.25);
+        material.setFloat("heightScale", 0.33);
 
         let lightBlue = MaterialModule.hexToVec3("#ADD8E6");
         material.setVector3("color", lightBlue);
-        ground.position.y = 0;
         
         let skyboxTexture = new BABYLON.CubeTexture("./assets/skybox", scene);
         let skyboxMaterial = MaterialModule.createSkyboxMaterial(scene);
