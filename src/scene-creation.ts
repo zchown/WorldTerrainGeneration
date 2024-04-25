@@ -12,7 +12,7 @@ export module SceneCreation {
         let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
         ground.position.y = 0;
 
-        let material = MaterialModule.heightMapTextureColor(scene);
+        let material = MaterialModule.slopeShading(scene);
         ground.material = material;
 
         let texture = new BABYLON.Texture("./assets/worldHeightMap.jpg", scene);
@@ -33,6 +33,12 @@ export module SceneCreation {
 
         var update = function() {
             skyboxMaterial.setVector3("cameraPosition", camera.position);
+            let world4x4 = ground.getWorldMatrix();
+            let normalMatrix4x4 = new BABYLON.Matrix();
+            world4x4.toNormalMatrix(normalMatrix4x4);
+            let inverseTranspose3x3 = BABYLON.Matrix.GetAsMatrix3x3(normalMatrix4x4);
+            material.setMatrix3x3("inverseTranspose", inverseTranspose3x3);
+
         }
         scene.registerBeforeRender(update);
 

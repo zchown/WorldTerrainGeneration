@@ -76,4 +76,18 @@ export module MaterialModule {
 
         return shaderMaterial;
     }
+
+    export function slopeShading(scene: BABYLON.Scene) {
+        let material = new BABYLON.ShaderMaterial("slopeShading", scene, {
+            vertexSource: VertexModule.heightMap,
+            fragmentSource: FragmentModule.normalShading
+        },
+        {
+            attributes: ["position", "uv", "normal"],
+            uniforms: ["worldViewProjection", "heightScale", "inverseTranspose"],
+            samplers: ["heightMap"]
+        });
+
+        return material;
+    }
 }

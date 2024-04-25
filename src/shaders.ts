@@ -20,17 +20,20 @@ export module VertexModule {
 
         attribute vec3 position;
         attribute vec2 uv;
+        attribute vec3 normal;
 
         uniform mat4 worldViewProjection;
         uniform sampler2D heightMap;
         uniform float heightScale;
+        uniform mat3 inverseTranspose;
 
         varying vec3 vPositionW;
         varying vec2 vUV;
+        varying vec3 norms;
 
         void main() {
             vUV = uv;
-            
+            norms = inverseTranspose * normal;
             float height = texture2D(heightMap, uv).r * heightScale;
             vec3 newPosition = position + vec3(0.0, height, 0.0);
             vPositionW = newPosition;
@@ -190,6 +193,19 @@ export module FragmentModule {
             // Output the final color
             gl_FragColor = vec4(color, 1.0);
         }
+
+
+    `;
+    export var normalShading = `
+        precision highp float;
+        varying vec3 norms;
+
+        void main() {
+            float yy = norms.y;
+            gl_FragColor = vec4(0, 0, yy * 0.5, 1.0);
+            
+        }
+
     `;
 
 }
