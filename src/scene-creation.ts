@@ -4,22 +4,20 @@ import { MaterialModule } from '../src/materials'
 export module SceneCreation {
     export function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
         let scene = new BABYLON.Scene(engine);
-        let camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-        camera.setTarget(BABYLON.Vector3.Zero());
+        let camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI/2, 1, 10, new BABYLON.Vector3(0, 0, 0), scene);
         camera.attachControl(canvas, true);
         let light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
         light.intensity = 0.7;
 
         let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
         ground.position.y = 0;
-        camera.setTarget(ground.position);
 
         let material = MaterialModule.heightMapTextureColor(scene);
         ground.material = material;
 
         let texture = new BABYLON.Texture("./assets/worldHeightMap.jpg", scene);
         material.setTexture("heightMap", texture);
-        material.setFloat("heightScale", 0.33);
+        material.setFloat("heightScale", 1.0);
 
         let lightBlue = MaterialModule.hexToVec3("#ADD8E6");
         material.setVector3("color", lightBlue);
@@ -31,6 +29,12 @@ export module SceneCreation {
 
         let skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size: 4.0, sideOrientation: BABYLON.Mesh.BACKSIDE}, scene);
         skybox.material = skyboxMaterial;
+
+
+        var update = function() {
+            skyboxMaterial.setVector3("cameraPosition", camera.position);
+        }
+        scene.registerBeforeRender(update);
 
 
         return scene;
