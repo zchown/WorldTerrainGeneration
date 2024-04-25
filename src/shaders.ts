@@ -110,14 +110,25 @@ export module FragmentModule {
         void main() {
             float height = (vPositionW.y);
             vec3 color;
-            if (height < 0.1) {
+            if (height < 0.06) {
                 color = vec3(0.0, 0.0, 1.0); // Blue
+            } else if (height < 0.1) {
+                color = vec3(0.0, 1.0, 0.0); //  Green
             } else if (height < 0.5) {
-                color = vec3(0.0, 1.0, 0.0); // Green
-            } else if (height < 0.75) {
-                color = vec3(1.0, 1.0, 0.0); // Yellow
+                // Interpolate between green and yellow
+                color = mix(vec3(0.0, 1.0, 0.0), vec3(.5, .5, .5), smoothstep(0.1, 0.5, height));
             } else {
                 color = vec3(1.0, 1.0, 1.0); // White
+            }
+            
+            float posX = (vPositionW.z);
+            if (posX > 2.9) {
+                color = color = vec3(1.0, 1.0, 1.0);
+            }
+
+            if (posX < -2. && height > 0.06) {
+                
+                color = mix(vec3(0.5, 0.5, 0.5), vec3(1.0, 1.0, 1.0), smoothstep(0.07, 0.2, height));
             }
             gl_FragColor = vec4(color, 1.0);
         }
@@ -166,7 +177,7 @@ export module FragmentModule {
         
             // Color the pixel based on its height
             vec3 color;
-            if (height < 0.1) {
+            if (height < 0.05) {
                 color = vec3(0.0, 0.0, 1.0); // Blue
             } else if (height < 0.5) {
                 color = vec3(0.0, 1.0, 0.0); // Green
