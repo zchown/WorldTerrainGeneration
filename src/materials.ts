@@ -38,7 +38,7 @@ export module MaterialModule {
     export function heightMapTextureColor(scene: BABYLON.Scene) {
         let heightMapMaterial = new BABYLON.ShaderMaterial("heightMapMaterial", scene, {
             vertexSource: VertexModule.heightMap,
-            fragmentSource: FragmentModule.heightDebug,
+            fragmentSource: FragmentModule.heightShading,
         },
         {
             attributes: ["position", "uv"],

@@ -30,9 +30,10 @@ export module VertexModule {
 
         void main() {
             vUV = uv;
-            vPositionW = position;
+            
             float height = texture2D(heightMap, uv).r * heightScale;
             vec3 newPosition = position + vec3(0.0, height, 0.0);
+            vPositionW = newPosition;
             gl_Position = worldViewProjection * vec4(newPosition, 1.0);
         }
     `;
@@ -64,6 +65,32 @@ export module VertexModule {
         }
     `;
 
+    export var groundVertTest = `
+        precision highp float;
+
+        // Attributes
+        attribute vec3 position;
+        attribute vec3 normal;
+        attribute vec2 uv;
+        
+        // Uniforms
+        uniform mat4 world;
+        uniform mat4 worldView;
+        uniform mat4 worldViewProjection;
+        uniform mat4 view;
+        uniform mat4 projection;
+        
+        // Varying
+        varying vec3 vPositionW;
+        varying vec2 vUV;
+        
+        void main(void) {
+            gl_Position = worldViewProjection * vec4(position, 1.0);
+            vPositionW = (world * vec4(position, 1.0)).xyz;
+            vUV = uv;
+        }
+    `;
+
 }
 
 export module FragmentModule {
@@ -76,11 +103,23 @@ export module FragmentModule {
     `;
 
     export let heightShading = `
+        
         precision highp float;
         varying vec3 vPositionW;
         
         void main() {
-            gl_FragColor = vec4(vPositionW, 1.0);
+            float height = (vPositionW.y);
+            vec3 color;
+            if (height < 0.1) {
+                color = vec3(0.0, 0.0, 1.0); // Blue
+            } else if (height < 0.5) {
+                color = vec3(0.0, 1.0, 0.0); // Green
+            } else if (height < 0.75) {
+                color = vec3(1.0, 1.0, 0.0); // Yellow
+            } else {
+                color = vec3(1.0, 1.0, 1.0); // White
+            }
+            gl_FragColor = vec4(color, 1.0);
         }
 
     `;
@@ -93,7 +132,8 @@ export module FragmentModule {
         
         void main() {
             vec4 color = texture2D(heightMap, vUV);
-            gl_FragColor = color;
+            
+            gl_FragColor = (color);
 
         }
     `;
@@ -108,6 +148,37 @@ export module FragmentModule {
             gl_FragColor = vec4(reflectionColor,1);
         }
 
+    `;
+
+    export var groundFragTest = `
+        precision highp float;
+
+        // Varying
+        varying vec3 vPositionW;
+        varying vec2 vUV;
+        
+        // Uniforms
+        uniform sampler2D heightmap;
+        
+        void main(void) {
+            // Sample the heightmap texture
+            float height = texture2D(heightmap, vUV).r;
+        
+            // Color the pixel based on its height
+            vec3 color;
+            if (height < 0.1) {
+                color = vec3(0.0, 0.0, 1.0); // Blue
+            } else if (height < 0.5) {
+                color = vec3(0.0, 1.0, 0.0); // Green
+            } else if (height < 0.75) {
+                color = vec3(1.0, 1.0, 0.0); // Yellow
+            } else {
+                color = vec3(1.0, 1.0, 1.0); // White
+            }
+        
+            // Output the final color
+            gl_FragColor = vec4(color, 1.0);
+        }
     `;
 
 }
