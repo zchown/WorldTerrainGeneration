@@ -93,7 +93,7 @@ export module MaterialModule {
         },
         {
             attributes: ["position", "uv"],
-            uniforms: ["worldViewProjection", "heightScale", "blend"],
+            uniforms: ["worldViewProjection", "hs1", "hs2", "blend"],
             samplers: ["hm1", "hm2"]
         });
         return material;

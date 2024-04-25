@@ -101,7 +101,8 @@ export module VertexModule {
         attribute vec3 position;
         attribute vec2 uv;
 
-        uniform float heightScale;
+        uniform float hs1;
+        uniform float hs2;
         uniform sampler2D hm1;
         uniform sampler2D hm2;
         uniform float blend;
@@ -110,8 +111,8 @@ export module VertexModule {
         varying vec3 vPositionW;
 
         void main() {
-            float h1 = texture2D(hm2, uv).r * heightScale;
-            float h2 = texture2D(hm1, uv).r * heightScale;
+            float h1 = texture2D(hm1, uv).r * hs1;
+            float h2 = texture2D(hm2, uv).r * hs2;
             float height = ((h1 * blend) + h2 * (1.0 - blend)) / 2.0;
             vec3 newPosition = position + vec3(0.0, height, 0.0);
             vPositionW = newPosition;

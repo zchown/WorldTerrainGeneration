@@ -19,7 +19,8 @@ export module SceneCreation {
 
 
         let material = MaterialModule.morphMaterial(scene);
-        material.setFloat("heightScale", 7.5);
+        material.setFloat("hs1", 7.0);
+        material.setFloat("hs2", 8.0);
         material.setTexture("hm1", texture1);
         material.setTexture("hm2", texture2);
         material.setFloat("blend", 1.0);
@@ -36,18 +37,16 @@ export module SceneCreation {
             if (b <= 0 || b >= 1) {
                 c = c * -1;
             }
-            console.log(b);
             material.setFloat("blend", b);
         }
         scene.registerBeforeRender(update);
-
 
         return scene;
     };
     
     const createMaterial = (scene: BABYLON.Scene) => {
         let material = MaterialModule.worldMaterial(scene);
-        let texture = new BABYLON.Texture("./assets/heightmaps/WorldHeightMap.jpg", scene);
+        let texture = new BABYLON.Texture("./assets/heightmaps/worldHeightMap.jpg", scene);
 
         material.setTexture("heightMap", texture);
         material.setVector3("color", ColorModule.lightBlue);
