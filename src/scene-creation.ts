@@ -13,9 +13,25 @@ export module SceneCreation {
         let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
         ground.position.y = 0;
 
-        let material = MaterialModule.heightMapTextureColor(scene);
-        ground.material = material;
+        ground.material = createMaterial(scene);
+        let skybox = createSkybox(scene);
+        
+        var update = function() {
+            (skybox.material as BABYLON.ShaderMaterial).setVector3("cameraPosition", camera.position);
+            // let world4x4 = ground.getWorldMatrix();
+            // let normalMatrix4x4 = new BABYLON.Matrix();
+            // world4x4.toNormalMatrix(normalMatrix4x4);
+            // let inverseTranspose3x3 = BABYLON.Matrix.GetAsMatrix3x3(normalMatrix4x4);
+            // material.setMatrix3x3("inverseTranspose", inverseTranspose3x3);
+        }
+        scene.registerBeforeRender(update);
 
+
+        return scene;
+    };
+    
+    const createMaterial = (scene: BABYLON.Scene) => {
+        let material = MaterialModule.heightMapTextureColor(scene);
         let texture = new BABYLON.Texture("./assets/worldHeightMap.jpg", scene);
         material.setTexture("heightMap", texture);
         material.setFloat("heightScale", 1.0);
@@ -25,28 +41,17 @@ export module SceneCreation {
         material.setVector3("terrainColor", ColorModule.grass);
         material.setVector3("mountainColor", ColorModule.mountain);
         material.setVector3("snowColor", ColorModule.snow);
-        
+        return material;
+    }
+
+    const createSkybox = (scene: BABYLON.Scene) => {
         let skyboxTexture = new BABYLON.CubeTexture("./assets/skybox", scene);
         let skyboxMaterial = MaterialModule.createSkyboxMaterial(scene);
         skyboxMaterial.setTexture("skyboxTexture", skyboxTexture);
 
-
         let skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size: 4.0, sideOrientation: BABYLON.Mesh.BACKSIDE}, scene);
         skybox.material = skyboxMaterial;
-
-
-        var update = function() {
-            skyboxMaterial.setVector3("cameraPosition", camera.position);
-            // let world4x4 = ground.getWorldMatrix();
-            // let normalMatrix4x4 = new BABYLON.Matrix();
-            // world4x4.toNormalMatrix(normalMatrix4x4);
-            // let inverseTranspose3x3 = BABYLON.Matrix.GetAsMatrix3x3(normalMatrix4x4);
-            // material.setMatrix3x3("inverseTranspose", inverseTranspose3x3);
-
-        }
-        scene.registerBeforeRender(update);
-
-
-        return scene;
-    };
+        return skybox;
+    }
+        
 }

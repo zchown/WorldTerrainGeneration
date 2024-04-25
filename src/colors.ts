@@ -7,8 +7,8 @@ export module ColorModule {
     }
 
     export let lightBlue = hexToVec3('#ADD8E6')
-    export let grass = hexToVec3("#228B22")
-    export let mountain = hexToVec3("#8B4513")
-    export let snow = hexToVec3("#FFFFFF")
+    export let grass = hexToVec3('#24A532')
+    export let mountain = hexToVec3('#AAAAAA')
+    export let snow = hexToVec3('#EEEEEE')
 }
 

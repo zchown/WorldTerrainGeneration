@@ -144,9 +144,6 @@ export module FragmentModule {
                 color = mix(vec3(0.5, 0.5, 0.5), vec3(1.0, 1.0, 1.0), smoothstep(0.07, 0.2, height));
             }
 
-
-            
-
             gl_FragColor = vec4(color, 1.0);
         }
 
