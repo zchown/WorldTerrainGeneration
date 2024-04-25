@@ -42,7 +42,7 @@ export module MaterialModule {
         },
         {
             attributes: ["position", "uv"],
-            uniforms: ["worldViewProjection", "heightScale"],
+            uniforms: ["worldViewProjection", "heightScale", "waterColor", "terrainColor", "mountainColor", "snowColor"],
             samplers: ["heightMap"]
         });
 

@@ -100,28 +100,35 @@ export module FragmentModule {
     export let flat = `
     precision highp float;
     uniform vec3 color;
+
     void main(void) {
         gl_FragColor = vec4(color, 1.0);
     }
     `;
 
     export let heightShading = `
-        
         precision highp float;
+
+        uniform vec3 waterColor;
+        uniform vec3 terrainColor;
+        uniform vec3 mountainColor;
+        uniform vec3 snowColor;
+
+
         varying vec3 vPositionW;
         
         void main() {
             float height = (vPositionW.y);
             vec3 color;
             if (height < 0.06) {
-                color = vec3(0.0, 0.0, 1.0); // Blue
+                color = waterColor;
             } else if (height < 0.1) {
-                color = vec3(0.0, 1.0, 0.0); //  Green
+                color = terrainColor;
             } else if (height < 0.5) {
                 // add mountains
-                color = mix(vec3(0.0, 1.0, 0.0), vec3(.5, .5, .5), smoothstep(0.1, 0.5, height));
+                color = mix(terrainColor, mountainColor, smoothstep(0.1, 0.5, height));
             } else {
-                color = vec3(1.0, 1.0, 1.0); // White
+                color = snowColor;
             }
             
             float lat = vPositionW.z;

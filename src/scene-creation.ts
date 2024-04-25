@@ -12,7 +12,7 @@ export module SceneCreation {
         let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
         ground.position.y = 0;
 
-        let material = MaterialModule.slopeShading(scene);
+        let material = MaterialModule.heightMapTextureColor(scene);
         ground.material = material;
 
         let texture = new BABYLON.Texture("./assets/worldHeightMap.jpg", scene);
@@ -21,6 +21,11 @@ export module SceneCreation {
 
         let lightBlue = MaterialModule.hexToVec3("#ADD8E6");
         material.setVector3("color", lightBlue);
+        material.setVector3("waterColor", lightBlue);
+        material.setVector3("terrainColor", MaterialModule.hexToVec3("#228B22"));
+        let mc = MaterialModule.hexToVec3("#555555");
+        material.setVector3("mountainColor", mc);
+        material.setVector3("snowColor", MaterialModule.hexToVec3("#FFFFFF"));
         
         let skyboxTexture = new BABYLON.CubeTexture("./assets/skybox", scene);
         let skyboxMaterial = MaterialModule.createSkyboxMaterial(scene);
@@ -33,11 +38,11 @@ export module SceneCreation {
 
         var update = function() {
             skyboxMaterial.setVector3("cameraPosition", camera.position);
-            let world4x4 = ground.getWorldMatrix();
-            let normalMatrix4x4 = new BABYLON.Matrix();
-            world4x4.toNormalMatrix(normalMatrix4x4);
-            let inverseTranspose3x3 = BABYLON.Matrix.GetAsMatrix3x3(normalMatrix4x4);
-            material.setMatrix3x3("inverseTranspose", inverseTranspose3x3);
+            // let world4x4 = ground.getWorldMatrix();
+            // let normalMatrix4x4 = new BABYLON.Matrix();
+            // world4x4.toNormalMatrix(normalMatrix4x4);
+            // let inverseTranspose3x3 = BABYLON.Matrix.GetAsMatrix3x3(normalMatrix4x4);
+            // material.setMatrix3x3("inverseTranspose", inverseTranspose3x3);
 
         }
         scene.registerBeforeRender(update);
