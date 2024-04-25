@@ -10,7 +10,7 @@ export module SceneCreation {
         let light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
         light.intensity = 0.7;
 
-        let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6, subdivisions: 500}, scene);
+        let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 6, subdivisions: 1000}, scene);
         ground.position.y = 0;
 
         ground.material = createMaterial(scene);
@@ -39,6 +39,7 @@ export module SceneCreation {
         material.setVector3("color", ColorModule.lightBlue);
         material.setVector3("waterColor", ColorModule.lightBlue);
         material.setVector3("terrainColor", ColorModule.grass);
+        material.setVector3("darkTerrainColor", ColorModule.darkGrass);
         material.setVector3("mountainColor", ColorModule.mountain);
         material.setVector3("snowColor", ColorModule.snow);
         return material;

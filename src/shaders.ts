@@ -3,11 +3,11 @@ export module VertexModule {
         precision highp float;
         
         attribute vec2 uv;
+        attribute vec3 position;
+
+        uniform mat4 worldViewProjection;
 
         varying vec2 vUV;
-
-        attribute vec3 position;
-        uniform mat4 worldViewProjection;
 
         void main() {
             vUV = uv;
@@ -71,19 +71,16 @@ export module VertexModule {
     export var groundVertTest = `
         precision highp float;
 
-        // Attributes
         attribute vec3 position;
         attribute vec3 normal;
         attribute vec2 uv;
         
-        // Uniforms
         uniform mat4 world;
         uniform mat4 worldView;
         uniform mat4 worldViewProjection;
         uniform mat4 view;
         uniform mat4 projection;
         
-        // Varying
         varying vec3 vPositionW;
         varying vec2 vUV;
         
@@ -111,9 +108,9 @@ export module FragmentModule {
 
         uniform vec3 waterColor;
         uniform vec3 terrainColor;
+        uniform vec3 darkTerrainColor;
         uniform vec3 mountainColor;
         uniform vec3 snowColor;
-
 
         varying vec3 vPositionW;
         
@@ -123,9 +120,8 @@ export module FragmentModule {
             if (height < 0.06) {
                 color = waterColor;
             } else if (height < 0.1) {
-                color = terrainColor;
+                color = mix(darkTerrainColor, terrainColor, smoothstep(0.001, 0.5, height));
             } else if (height < 0.5) {
-                // add mountains
                 color = mix(terrainColor, mountainColor, smoothstep(0.1, 0.5, height));
             } else {
                 color = snowColor;
@@ -140,7 +136,6 @@ export module FragmentModule {
             }
 
             if (lat < -2. && height > 0.06) {
-                
                 color = mix(vec3(0.5, 0.5, 0.5), vec3(1.0, 1.0, 1.0), smoothstep(0.07, 0.2, height));
             }
 
