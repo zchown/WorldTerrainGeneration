@@ -70,6 +70,8 @@ export module VertexModule {
         }
     `;
 
+    // this is very custom to the world map
+    // does not work with other height maps
     export var groundVertTest = `
         precision highp float;
 
@@ -90,6 +92,30 @@ export module VertexModule {
             gl_Position = worldViewProjection * vec4(position, 1.0);
             vPositionW = (world * vec4(position, 1.0)).xyz;
             vUV = uv;
+        }
+    `;
+
+    export var morphVert = `
+        precision highp float;
+
+        attribute vec3 position;
+        attribute vec2 uv;
+
+        uniform float heightScale;
+        uniform sampler2D hm1;
+        uniform sampler2D hm2;
+        uniform float blend;
+        uniform mat4 worldViewProjection;
+
+        varying vec3 vPositionW;
+
+        void main() {
+            float h1 = texture2D(hm2, uv).r * heightScale;
+            float h2 = texture2D(hm1, uv).r * heightScale;
+            float height = ((h1 * blend) + h2 * (1.0 - blend)) / 2.0;
+            vec3 newPosition = position + vec3(0.0, height, 0.0);
+            vPositionW = newPosition;
+            gl_Position = worldViewProjection * vec4(newPosition, 1.0);
         }
     `;
 
@@ -144,13 +170,12 @@ export module FragmentModule {
 
             gl_FragColor = vec4(color, 1.0);
         }
-
     `;
 
     export let heightDebug = `
         precision highp float;
 
-        uniform sampler2D heightMap;
+        varying sampler2D heightMap;
         
         varying vec2 vUV;
 
@@ -158,6 +183,17 @@ export module FragmentModule {
             vec4 color = texture2D(heightMap, vUV);
             gl_FragColor = (color);
 
+        }
+    `;
+
+    export let hDebug = `
+        precision highp float;
+
+        varying vec3 vPositionW;
+
+        void main() {
+            float height = (vPositionW.y);
+            gl_FragColor = vec4(height, height, height, 1.0);
         }
     `;
 
@@ -170,7 +206,6 @@ export module FragmentModule {
             vec3 reflectionColor = textureCube(skyboxTexture, vPos).rgb;
             gl_FragColor = vec4(reflectionColor,1);
         }
-
     `;
 
     export var normalShading = `

@@ -13,16 +13,31 @@ export module SceneCreation {
         let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 6, subdivisions: 1000}, scene);
         ground.position.y = 0;
 
-        ground.material = createMaterial(scene);
+
+        let texture1 = new BABYLON.Texture("./assets/heightmaps/Heightmap_01_Mountain.png", scene);
+        let texture2 = new BABYLON.Texture("./assets/heightmaps/Heightmap_06_Canyon.png", scene);
+
+
+        let material = MaterialModule.morphMaterial(scene);
+        material.setFloat("heightScale", 7.5);
+        material.setTexture("hm1", texture1);
+        material.setTexture("hm2", texture2);
+        material.setFloat("blend", 1.0);
+
+        ground.material = material;
+
         let skybox = createSkybox(scene);
+        let c = -0.01;
+        let b = 1.0;
         
         var update = function() {
             (skybox.material as BABYLON.ShaderMaterial).setVector3("cameraPosition", camera.position);
-            // let world4x4 = ground.getWorldMatrix();
-            // let normalMatrix4x4 = new BABYLON.Matrix();
-            // world4x4.toNormalMatrix(normalMatrix4x4);
-            // let inverseTranspose3x3 = BABYLON.Matrix.GetAsMatrix3x3(normalMatrix4x4);
-            // material.setMatrix3x3("inverseTranspose", inverseTranspose3x3);
+            b += c;
+            if (b <= 0 || b >= 1) {
+                c = c * -1;
+            }
+            console.log(b);
+            material.setFloat("blend", b);
         }
         scene.registerBeforeRender(update);
 
@@ -31,11 +46,10 @@ export module SceneCreation {
     };
     
     const createMaterial = (scene: BABYLON.Scene) => {
-        let material = MaterialModule.heightMapTextureColor(scene);
-        let texture = new BABYLON.Texture("./assets/worldHeightMap.jpg", scene);
-        material.setTexture("heightMap", texture);
-        material.setFloat("heightScale", 1.0);
+        let material = MaterialModule.worldMaterial(scene);
+        let texture = new BABYLON.Texture("./assets/heightmaps/WorldHeightMap.jpg", scene);
 
+        material.setTexture("heightMap", texture);
         material.setVector3("color", ColorModule.lightBlue);
         material.setVector3("waterColor", ColorModule.lightBlue);
         material.setVector3("terrainColor", ColorModule.grass);
@@ -46,7 +60,7 @@ export module SceneCreation {
     }
 
     const createSkybox = (scene: BABYLON.Scene) => {
-        let skyboxTexture = new BABYLON.CubeTexture("./assets/skybox", scene);
+        let skyboxTexture = new BABYLON.CubeTexture("./assets/skybox/skybox", scene);
         let skyboxMaterial = MaterialModule.createSkyboxMaterial(scene);
         skyboxMaterial.setTexture("skyboxTexture", skyboxTexture);
 
