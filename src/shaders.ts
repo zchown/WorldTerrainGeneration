@@ -115,21 +115,28 @@ export module FragmentModule {
             } else if (height < 0.1) {
                 color = vec3(0.0, 1.0, 0.0); //  Green
             } else if (height < 0.5) {
-                // Interpolate between green and yellow
+                // add mountains
                 color = mix(vec3(0.0, 1.0, 0.0), vec3(.5, .5, .5), smoothstep(0.1, 0.5, height));
             } else {
                 color = vec3(1.0, 1.0, 1.0); // White
             }
             
-            float posX = (vPositionW.z);
-            if (posX > 2.9) {
+            float lat = vPositionW.z;
+            float lon = vPositionW.x;
+
+            // Add snow to the poles
+            if (lat > 2.9) {
                 color = color = vec3(1.0, 1.0, 1.0);
             }
 
-            if (posX < -2. && height > 0.06) {
+            if (lat < -2. && height > 0.06) {
                 
                 color = mix(vec3(0.5, 0.5, 0.5), vec3(1.0, 1.0, 1.0), smoothstep(0.07, 0.2, height));
             }
+
+
+            
+
             gl_FragColor = vec4(color, 1.0);
         }
 
