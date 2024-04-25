@@ -30,9 +30,11 @@ export module VertexModule {
         varying vec3 vPositionW;
         varying vec2 vUV;
         varying vec3 norms;
+        varying float hs;
 
         void main() {
             vUV = uv;
+            hs = heightScale;
             norms = inverseTranspose * normal;
             float height = texture2D(heightMap, uv).r * heightScale;
             vec3 newPosition = position + vec3(0.0, height, 0.0);
@@ -113,11 +115,12 @@ export module FragmentModule {
         uniform vec3 snowColor;
 
         varying vec3 vPositionW;
+        varying float hs;
         
         void main() {
-            float height = (vPositionW.y);
+            float height = (vPositionW.y) / hs;
             vec3 color;
-            if (height < 0.06) {
+            if (height < 0.055) {
                 color = waterColor;
             } else if (height < 0.1) {
                 color = mix(darkTerrainColor, terrainColor, smoothstep(0.001, 0.5, height));
@@ -146,13 +149,13 @@ export module FragmentModule {
 
     export let heightDebug = `
         precision highp float;
-        varying vec2 vUV;
 
         uniform sampler2D heightMap;
         
+        varying vec2 vUV;
+
         void main() {
             vec4 color = texture2D(heightMap, vUV);
-            
             gl_FragColor = (color);
 
         }
@@ -170,38 +173,6 @@ export module FragmentModule {
 
     `;
 
-    export var groundFragTest = `
-        precision highp float;
-
-        // Varying
-        varying vec3 vPositionW;
-        varying vec2 vUV;
-        
-        // Uniforms
-        uniform sampler2D heightmap;
-        
-        void main(void) {
-            // Sample the heightmap texture
-            float height = texture2D(heightmap, vUV).r;
-        
-            // Color the pixel based on its height
-            vec3 color;
-            if (height < 0.05) {
-                color = vec3(0.0, 0.0, 1.0); // Blue
-            } else if (height < 0.5) {
-                color = vec3(0.0, 1.0, 0.0); // Green
-            } else if (height < 0.75) {
-                color = vec3(1.0, 1.0, 0.0); // Yellow
-            } else {
-                color = vec3(1.0, 1.0, 1.0); // White
-            }
-        
-            // Output the final color
-            gl_FragColor = vec4(color, 1.0);
-        }
-
-
-    `;
     export var normalShading = `
         precision highp float;
         varying vec3 norms;
