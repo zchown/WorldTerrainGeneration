@@ -297,9 +297,9 @@ export module FragmentModule {
 
             // normalize to [0, 1]
             xSlope = xSlope * 5.0;
-            // xSlope = xSlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
+            xSlope = xSlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
             ySlope = ySlope * 5.0;
-            // ySlope = ySlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
+            ySlope = ySlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
 
 
             float height = (vPositionW.y);
