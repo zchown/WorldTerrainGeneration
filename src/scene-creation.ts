@@ -15,12 +15,13 @@ export module SceneCreation {
 
 
         let texture1 = new BABYLON.Texture("./assets/heightmaps/Heightmap_01_Mountain.png", scene);
+        // let texture1 = new BABYLON.Texture("./assets/heightmaps/worldHeightMap.jpg", scene);
+
         let texture2 = new BABYLON.Texture("./assets/heightmaps/Heightmap_06_Canyon.png", scene);
 
-
-        let material = MaterialModule.morphMaterial(scene);
-        material.setFloat("hs1", 7.0);
-        material.setFloat("hs2", 8.0);
+        let material = MaterialModule.morphSlope(scene);
+        material.setFloat("hs1", 12.0);
+        material.setFloat("hs2", 15.0);
         material.setTexture("hm1", texture1);
         material.setTexture("hm2", texture2);
         material.setFloat("blend", 1.0);

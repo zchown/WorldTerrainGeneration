@@ -109,6 +109,7 @@ export module VertexModule {
         uniform mat4 worldViewProjection;
 
         varying vec3 vPositionW;
+        varying vec2 vUV;
 
         void main() {
             float h1 = texture2D(hm1, uv).r * hs1;
@@ -116,6 +117,7 @@ export module VertexModule {
             float height = ((h1 * blend) + h2 * (1.0 - blend)) / 2.0;
             vec3 newPosition = position + vec3(0.0, height, 0.0);
             vPositionW = newPosition;
+            vUV = uv;
             gl_Position = worldViewProjection * vec4(newPosition, 1.0);
         }
     `;
@@ -209,16 +211,51 @@ export module FragmentModule {
         }
     `;
 
-    export var normalShading = `
+    export var slopeShading= `
         precision highp float;
-        varying vec3 norms;
+
+        uniform sampler2D hm1;
+        uniform sampler2D hm2;
+
+        uniform float blend;
+        uniform float hs1;
+        uniform float hs2;
+
+        varying vec2 vUV;
 
         void main() {
-            float yy = norms.y;
-            gl_FragColor = vec4(0, 0, yy * 0.5, 1.0);
-            
-        }
 
+            float step = 0.05;
+            float left1 = texture2D(hm1, vec2(vUV.x - step, vUV.y)).r * hs1;
+            float right1 = texture2D(hm1, vec2(vUV.x + step, vUV.y)).r * hs1;
+            float up1 = texture2D(hm1, vec2(vUV.x, vUV.y - step)).r * hs1;
+            float down1 = texture2D(hm1, vec2(vUV.x, vUV.y + step)).r * hs1;
+            float left2 = texture2D(hm2, vec2(vUV.x - step, vUV.y)).r * hs2;
+            float right2 = texture2D(hm2, vec2(vUV.x + step, vUV.y)).r * hs2;
+            float up2 = texture2D(hm2, vec2(vUV.x, vUV.y - step)).r * hs2;
+            float down2 = texture2D(hm2, vec2(vUV.x, vUV.y + step)).r * hs2;
+
+            float rightHeight = ((right1 * blend) + right2 * (1.0 - blend)) / 2.0;
+            float leftHeight = ((left1 * blend) + left2 * (1.0 - blend)) / 2.0;
+            float upHeight = ((up1 * blend) + up2 * (1.0 - blend)) / 2.0;
+            float downHeight = ((down1 * blend) + down2 * (1.0 - blend)) / 2.0;
+
+            // float dx = abs((rightHeight - leftHeight) / step);
+            // float dy = abs((upHeight - downHeight) / step);
+            // float slope = sqrt(dx * dx + dy * dy); 
+            // slope = slope / 0.5;
+            // gl_FragColor = vec4(slope, slope, slope, 1.0);
+
+
+            float dx = (rightHeight - leftHeight);
+            float dy = (upHeight - downHeight);
+            float slope = atan(length(vec2(dx, dy))); // Calculate slope angle
+
+            // Normalize the slope to the range [0, 1]
+            slope = slope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
+
+            gl_FragColor = vec4(slope, slope, slope, 1.0);
+        }
     `;
 
 }

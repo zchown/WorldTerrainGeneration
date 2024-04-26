@@ -23,10 +23,13 @@
     # standard vertex and fragment shaders for debugging purposes
     # height map vertex shader that deforms ground based on a height map
     # various shaders for coloring to be able to see height map clearly
-    $ Skybox created
-
+    # Skybox created
+    # Interpolation between Heightmaps
 
 ### TODO
+    # Height map interpolation
+        * Currently we do this pretty simply
+        * is there a way to do it cooler?
     # Load grass/tree/snow/rock textures
         * application of textures should be based on height and slope of terrain being applied to
         * height is easy as we can use varying position
