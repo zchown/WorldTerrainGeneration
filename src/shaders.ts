@@ -225,7 +225,7 @@ export module FragmentModule {
 
         void main() {
 
-            float step = 0.05;
+            float step = 0.01;
             float left1 = texture2D(hm1, vec2(vUV.x - step, vUV.y)).r * hs1;
             float right1 = texture2D(hm1, vec2(vUV.x + step, vUV.y)).r * hs1;
             float up1 = texture2D(hm1, vec2(vUV.x, vUV.y - step)).r * hs1;
@@ -252,6 +252,7 @@ export module FragmentModule {
             float slope = atan(length(vec2(dx, dy))); // Calculate slope angle
 
             // Normalize the slope to the range [0, 1]
+            slope = slope * 5.0;
             slope = slope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
 
             gl_FragColor = vec4(slope, slope, slope, 1.0);
