@@ -97,4 +97,17 @@ export module MaterialModule {
         });
         return material;
     }
+
+    export function slopeHeight(scene: BABYLON.Scene) {
+        let material = new BABYLON.ShaderMaterial("slopeHeight", scene, {
+            vertexSource: VertexModule.morphVert,
+            fragmentSource: FragmentModule.slopeHeightShading,
+        },
+        {
+            attributes: ["position", "uv"],
+            uniforms: ["worldViewProjection", "hs1", "hs2", "blend"],
+            samplers: ["hm1", "hm2"]
+        });
+        return material;
+    }
 }

@@ -19,7 +19,7 @@ export module SceneCreation {
 
         let texture2 = new BABYLON.Texture("./assets/heightmaps/Heightmap_06_Canyon.png", scene);
 
-        let material = MaterialModule.morphSlope(scene);
+        let material = MaterialModule.slopeHeight(scene);
         material.setFloat("hs1", 12.0);
         material.setFloat("hs2", 15.0);
         material.setTexture("hm1", texture1);
