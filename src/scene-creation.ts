@@ -15,30 +15,43 @@ export module SceneCreation {
 
 
         let texture1 = new BABYLON.Texture("./assets/heightmaps/Heightmap_01_Mountain.png", scene);
-        // let texture1 = new BABYLON.Texture("./assets/heightmaps/worldHeightMap.jpg", scene);
 
         let texture2 = new BABYLON.Texture("./assets/heightmaps/Heightmap_06_Canyon.png", scene);
 
+        let texture3 = new BABYLON.Texture("./assets/heightmaps/Heightmap_02_Hills.png", scene);
+        let texture4 = new BABYLON.Texture("./assets/heightmaps/Heightmap_09_Archipelago.png", scene);
+
         let material = MaterialModule.slopeHeight(scene);
-        material.setFloat("hs1", 12.0);
+        material.setFloat("hs1", 15.0);
         material.setFloat("hs2", 15.0);
         material.setTexture("hm1", texture1);
         material.setTexture("hm2", texture2);
         material.setFloat("blend", 1.0);
+        material.backFaceCulling = false;
 
         ground.material = material;
 
         let skybox = createSkybox(scene);
-        let c = -0.01;
-        let b = 1.0;
+        let c = 0.005;
+        let b = 0.0;
+        let b2 = b;
+        let texArray = [texture1, texture2, texture3, texture4];
+        let t = texArray.length;
         
         var update = function() {
             (skybox.material as BABYLON.ShaderMaterial).setVector3("cameraPosition", camera.position);
+
             b += c;
-            if (b <= 0 || b >= 1) {
-                c = c * -1;
-            }
-            material.setFloat("blend", b);
+            b2 = b % 1.0;
+
+            let t1 = Math.floor(b / 1) % t;
+            let t2 = Math.floor((b / 1) + 1) % t;
+            console.log(t1, t2);
+
+            material.setTexture("hm1", texArray[t2]);
+            material.setTexture("hm2", texArray[t1]);
+            
+            material.setFloat("blend", b2);
         }
         scene.registerBeforeRender(update);
 
