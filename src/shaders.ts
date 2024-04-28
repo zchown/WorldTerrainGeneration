@@ -4,7 +4,6 @@ export module VertexModule {
         
         attribute vec2 uv;
         attribute vec3 position;
-        uniform vec3 pos;
 
         uniform mat4 worldViewProjection;
 
@@ -12,7 +11,8 @@ export module VertexModule {
 
         void main() {
             vUV = uv;
-            gl_Position = worldViewProjection * vec4(pos, 1.0);
+            gl_Position = worldViewProjection * vec4(position, 1.0);
+
         }
     `;
 
@@ -166,6 +166,21 @@ export module VertexModule {
             gl_Position = clipPosition;
 
 
+        }
+    `;
+
+    export let lightVert = `
+        attribute vec3 position;
+        uniform mat4 world;
+        uniform mat4 view;
+        uniform mat4 projection;
+                
+        void main() {
+            vec4 localPosition = vec4(position, 1.);
+            vec4 worldPosition = world * localPosition;     
+            vec4 viewPosition  = view * worldPosition;
+            vec4 clipPosition  = projection * viewPosition;
+            gl_Position = clipPosition;
         }
     `;
 

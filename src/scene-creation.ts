@@ -8,20 +8,36 @@ export module SceneCreation {
         let camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI/2, 1, 10, new BABYLON.Vector3(0, 0, 0), scene);
         camera.attachControl(canvas, true);
 
+
         let ball = BABYLON.MeshBuilder.CreateSphere("ball", {diameter: 1}, scene);
-        ball.material = MaterialModule.createDefaultMaterial(scene);
+        let m = MaterialModule.lightBall(scene);
+        m.setVector3("color", ColorModule.lightBlue);
+        ball.material = m;
         ball.position.y = 3;
-        ball.position.x = 0;
-        (ball.material as BABYLON.ShaderMaterial).setVector3("color", ColorModule.lightBlue);
+
+        // attribute vec3 position;
+        // uniform mat4 myWorld;
+        // uniform mat4 world;
+        // uniform mat4 view;
+        // uniform mat4 projection;
+        // uniform float time;
+        // varying mat4 woldPosition;
+           
+        // ball.material = MaterialModule.createDefaultMaterial(scene);
+        // ball.position.y = 3;
+        // ball.position.x = 0;
+        // let p = BABYLON.Vector3.FromArray([0, 3, 0]);
+        // (ball.material as BABYLON.ShaderMaterial).setVector3("color", ColorModule.lightBlue);
+        // (ball.material as BABYLON.ShaderMaterial).setVector3("pos", p);
 
         let skybox = createSkybox(scene);
         // let foo = shiftingMaterial(scene);
-        let foo = blinnMorph(scene, camera);
+        // let foo = blinnMorph(scene, camera);
 
         var update = function() {
             (skybox.material as BABYLON.ShaderMaterial).setVector3("cameraPosition", camera.position);
             //foo = foo();
-            foo = foo();
+            // foo = foo();
         }
         scene.registerBeforeRender(update);
 

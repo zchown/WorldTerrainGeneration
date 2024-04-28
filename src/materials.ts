@@ -123,4 +123,16 @@ export module MaterialModule {
         });
         return material;
     }
+
+    export function lightBall(scene: BABYLON.Scene) {
+        let material = new BABYLON.ShaderMaterial("lightBall", scene, {
+            vertexSource: VertexModule.lightVert,
+            fragmentSource: FragmentModule.flat,
+        },
+        {
+            attributes: ["position"],
+            uniforms: ["myWorld", "world", "view", "projection", "color"],
+        });
+        return material;
+    }
 }
