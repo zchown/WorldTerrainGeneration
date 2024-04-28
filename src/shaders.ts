@@ -144,6 +144,7 @@ export module VertexModule {
         uniform sampler2D hm1;
         uniform sampler2D hm2;
         uniform float blend;
+        varying vec2 vUV;
                 
         void main() {
             // Morphing
@@ -151,6 +152,7 @@ export module VertexModule {
             float h2 = texture2D(hm2, uv).r * hs2;
             float height = ((h1 * blend) + h2 * (1.0 - blend)) / 2.0;
             vec3 newPosition = position + vec3(0.0, height, 0.0);
+            vUV = uv;
 
             // Blinn
             vec4 localPosition = vec4(newPosition, 1.);
@@ -158,11 +160,11 @@ export module VertexModule {
             vec4 viewPosition  = view * worldPosition;
             vec4 clipPosition  = projection * viewPosition;
             worldPos = worldPosition.xyz;
-
-            // geet inverse transpose for normal transformation
             worldNormal = inverseTranspose * normal;
 
             gl_Position = clipPosition;
+
+
         }
     `;
 
@@ -352,7 +354,8 @@ export module FragmentModule {
         }
     `;
 
-    export const blinn = `
+    export const blinnMorph = `
+        precision highp float;
         uniform vec3 surfaceColor;
         uniform vec3 lightDirection;
         uniform float lightIntensity;
@@ -366,33 +369,49 @@ export module FragmentModule {
         varying vec3 worldNormal;
         varying vec3 worldPos;
 
+        // morphing
+        uniform float hs1;
+        uniform float hs2;
+        uniform sampler2D hm1;
+        uniform sampler2D hm2;
+        uniform float blend;
+        varying vec2 vUV;
+
         void main() {
+            // recalc normal
+            float step = 0.01;
+            float left1 = texture2D(hm1, vec2(vUV.x - step, vUV.y)).r * hs1;
+            float right1 = texture2D(hm1, vec2(vUV.x + step, vUV.y)).r * hs1;
+            float up1 = texture2D(hm1, vec2(vUV.x, vUV.y - step)).r * hs1;
+            float down1 = texture2D(hm1, vec2(vUV.x, vUV.y + step)).r * hs1;
+            float left2 = texture2D(hm2, vec2(vUV.x - step, vUV.y)).r * hs2;
+            float right2 = texture2D(hm2, vec2(vUV.x + step, vUV.y)).r * hs2;
+            float up2 = texture2D(hm2, vec2(vUV.x, vUV.y - step)).r * hs2;
+            float down2 = texture2D(hm2, vec2(vUV.x, vUV.y + step)).r * hs2;
+            float rightHeight = ((right1 * blend) + right2 * (1.0 - blend)) / 2.0;
+            float leftHeight = ((left1 * blend) + left2 * (1.0 - blend)) / 2.0;
+            float upHeight = ((up1 * blend) + up2 * (1.0 - blend)) / 2.0;
+            float downHeight = ((down1 * blend) + down2 * (1.0 - blend)) / 2.0;
 
-            // l
+
+            // magic happens here
+            vec3 normal = normalize(cross(vec3(0.0, rightHeight - leftHeight, step), vec3(step, upHeight - downHeight, 0.0)));
+
+
             vec3 normalizedLightDirection = normalize(lightDirection);
-            
-            // n
-            vec3 normalizedNormal = normalize(worldNormal);
-
-            // v
-            vec3 normalizedViewDirection = normalize(viewPosition);
-
-            // h
+            vec3 normalizedNormal = normalize(normal);
+            vec3 normalizedViewDirection = normalize(viewPosition - worldPos);
             vec3 normalizedhalfVector = normalize(normalizedViewDirection - normalizedLightDirection);
 
+            // def working
             float cosTheta = dot(normalizedNormal, -normalizedLightDirection);
             float cosRho = max(0.0, dot(normalizedNormal, normalizedhalfVector));
-
-
             vec3 specularTerm = (pow(cosRho, specularIntensity)) * specularColor;
-            
             vec3 diffuseTerm = lightIntensity * lightColor * surfaceColor * cosTheta;
             vec3 ambientTerm = ambientIntensity * ambientLightColor;
-            
             vec3 pixelColor;
-
             if (cosTheta > 0.0) {
-                pixelColor = diffuseTerm + ambientTerm;
+                pixelColor = diffuseTerm + + ambientTerm;
             }
             else {
                 pixelColor = ambientTerm;

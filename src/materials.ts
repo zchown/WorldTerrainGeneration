@@ -114,7 +114,7 @@ export module MaterialModule {
     export function blinnMorph(scene: BABYLON.Scene) {
         let material = new BABYLON.ShaderMaterial("blinnHeight", scene, {
             vertexSource: VertexModule.morphBlinn,
-            fragmentSource: FragmentModule.blinn
+            fragmentSource: FragmentModule.blinnMorph,
         },
         {
             attributes: ["position", "uv", "normal"],

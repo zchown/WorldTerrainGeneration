@@ -101,10 +101,9 @@ export module SceneCreation {
     }
         
     const blinnMorph = (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera) => {
-        // let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 6, subdivisions: 1000}, scene);
-        // let ground = Babylon.S
+        let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 6, subdivisions: 1000}, scene);
 
-        let ground= BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2});
+        // let ground= BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2});
         ground.position.y = 1;
         ground.position.x = 1.5;
 
