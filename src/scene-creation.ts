@@ -92,7 +92,6 @@ export module SceneCreation {
                 }
                 return doubleCurry;
             }
-            console.log("curry");
             return curry(0);
         }
         return foo(material, texArray, hs, b);

@@ -1,5 +1,5 @@
 export module VertexModule {
-    export let standard = `
+    export const standard = `
         precision highp float;
         
         attribute vec2 uv;
@@ -15,7 +15,7 @@ export module VertexModule {
         }
     `;
 
-    export let heightMap = `
+    export const heightMap = `
         precision highp float;
 
         attribute vec3 position;
@@ -43,7 +43,7 @@ export module VertexModule {
         }
     `;
 
-    export var skyboxVert = `
+    export const skyboxVert = `
         attribute vec3 position;
 
         uniform mat4 view;
@@ -72,7 +72,7 @@ export module VertexModule {
 
     // this is very custom to the world map
     // does not work with other height maps
-    export var groundVertTest = `
+    export const groundVertTest = `
         precision highp float;
 
         attribute vec3 position;
@@ -95,7 +95,7 @@ export module VertexModule {
         }
     `;
 
-    export var morphVert = `
+    export const morphVert = `
         precision highp float;
 
         attribute vec3 position;
@@ -122,10 +122,11 @@ export module VertexModule {
         }
     `;
 
+
 }
 
 export module FragmentModule {
-    export let flat = `
+    export const flat = `
     precision highp float;
     uniform vec3 color;
 
@@ -134,7 +135,7 @@ export module FragmentModule {
     }
     `;
 
-    export let heightShading = `
+    export const heightShading = `
         precision highp float;
 
         uniform vec3 waterColor;
@@ -175,7 +176,7 @@ export module FragmentModule {
         }
     `;
 
-    export let heightDebug = `
+    export const heightDebug = `
         precision highp float;
 
         varying sampler2D heightMap;
@@ -189,7 +190,7 @@ export module FragmentModule {
         }
     `;
 
-    export let hDebug = `
+    export const hDebug = `
         precision highp float;
 
         varying vec3 vPositionW;
@@ -200,7 +201,7 @@ export module FragmentModule {
         }
     `;
 
-    export var skyboxFrag= `
+    export const skyboxFrag= `
          uniform samplerCube skyboxTexture;
 
         varying vec3 vPos;
@@ -211,7 +212,7 @@ export module FragmentModule {
         }
     `;
 
-    export var slopeShading= `
+    export const slopeShading= `
         precision highp float;
 
         uniform sampler2D hm1;
@@ -259,7 +260,7 @@ export module FragmentModule {
         }
     `;
 
-    export var slopeHeightShading = `
+    export const slopeHeightShading = `
         precision highp float;
 
         uniform sampler2D hm1;
@@ -306,6 +307,56 @@ export module FragmentModule {
 
             gl_FragColor = vec4(xSlope, ySlope, height, 1.0);
         }
+    `;
+
+    export const blinn = `
+        uniform vec3 surfaceColor;
+        uniform vec3 lightDirection;
+        uniform float lightIntensity;
+        uniform vec3 lightColor;
+        uniform vec3 ambientLightColor;
+        uniform float ambientIntensity;
+        uniform vec3 specularColor;
+        uniform float specularIntensity;
+        uniform vec3 viewPosition;
+
+        varying vec3 worldNormal;
+        varying vec3 worldPos;
+
+        void main() {
+
+            // l
+            vec3 normalizedLightDirection = normalize(lightDirection);
+            
+            // n
+            vec3 normalizedNormal = normalize(worldNormal);
+
+            // v
+            vec3 normalizedViewDirection = normalize(viewPosition);
+
+            // h
+            vec3 normalizedhalfVector = normalize(normalizedViewDirection - normalizedLightDirection);
+
+            float cosTheta = dot(normalizedNormal, -normalizedLightDirection);
+            float cosRho = max(0.0, dot(normalizedNormal, normalizedhalfVector));
+
+
+            vec3 specularTerm = (pow(cosRho, specularIntensity)) * specularColor;
+            
+            vec3 diffuseTerm = lightIntensity * lightColor * surfaceColor * cosTheta;
+            vec3 ambientTerm = ambientIntensity * ambientLightColor;
+            
+            vec3 pixelColor;
+
+            if (cosTheta > 0.0) {
+                pixelColor = diffuseTerm + specularTerm + ambientTerm;
+            }
+            else {
+                pixelColor = ambientTerm;
+            }
+            gl_FragColor = vec4(pixelColor, 1);
+        }
+
     `;
 
 }
