@@ -81,8 +81,8 @@ export module SceneCreation {
 
                     let t1 = Math.floor(b / 1) % t;
                     let t2 = Math.floor((b / 1) + 1) % t;
-                    console.log(t1, t2);
 
+                    m.setTexture("hm1", texArray[t2]);
                     m.setTexture("hm2", texArray[t1]);
                     m.setFloat("hs1", hs[t2]);
                     m.setFloat("hs2", hs[t1]);
@@ -92,6 +92,7 @@ export module SceneCreation {
                 }
                 return doubleCurry;
             }
+            console.log("curry");
             return curry(0);
         }
         return foo(material, texArray, hs, b);
