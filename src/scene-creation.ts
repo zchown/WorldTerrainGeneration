@@ -8,6 +8,12 @@ export module SceneCreation {
         let camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI/2, 1, 10, new BABYLON.Vector3(0, 0, 0), scene);
         camera.attachControl(canvas, true);
 
+        let ball = BABYLON.MeshBuilder.CreateSphere("ball", {diameter: 1}, scene);
+        ball.material = MaterialModule.createDefaultMaterial(scene);
+        ball.position.y = 3;
+        ball.position.x = 0;
+        (ball.material as BABYLON.ShaderMaterial).setVector3("color", ColorModule.lightBlue);
+
         let skybox = createSkybox(scene);
         // let foo = shiftingMaterial(scene);
         let foo = blinnMorph(scene, camera);
@@ -124,7 +130,7 @@ export module SceneCreation {
 
         // blinn stuff
         const lightIntensity = 10
-        let lightDirection = new BABYLON.Vector3(500, -1, 0.7);
+        let lightDirection = new BABYLON.Vector3(5, -1, 0.7);
         let lightBall = BABYLON.MeshBuilder.CreateSphere("lightBall", {diameter: 0.2}, scene);
         lightBall.position = lightDirection;
         lightBall.material = MaterialModule.createDefaultMaterial(scene);
@@ -153,8 +159,8 @@ export module SceneCreation {
 
         ground.material = material;
 
-        let foo = function(m: BABYLON.ShaderMaterial, texArray: BABYLON.Texture[], hs: number[], b: number, camera: BABYLON.ArcRotateCamera, lb: BABYLON.Mesh, ld: BABYLON.Vector3) {
-            let curry = function(b: number) {
+        let foo = function(m: BABYLON.ShaderMaterial, texArray: BABYLON.Texture[], hs: number[], camera: BABYLON.ArcRotateCamera, lb: BABYLON.Mesh, ld: BABYLON.Vector3) {
+            let curry = function(b: number, ld: BABYLON.Vector3) {
                 let doubleCurry = function() {
                     // morph stuff
                     let b2 = b;
@@ -171,18 +177,17 @@ export module SceneCreation {
                     // blinn stuff
                     m.setVector3("viewPosition", camera.position);
                     let s = new BABYLON.Vector3(-0.005, 0, 0);
-                    ld = ld.add(s);
                     (lb.material as BABYLON.ShaderMaterial).setVector3("pos", ld);
                     lb.position = ld;
                     m.setVector3("lightDirection", ld);
+                    
 
-
-                    return curry(b + 0.005);
+                    return curry(b + 0.005, ld.add(s));
                 }
                 return doubleCurry;
             }
-            return curry(0);
+            return curry(0, ld);
         }
-        return foo(material, texArray, hs, b, camera, lightBall, lightDirection);
+        return foo(material, texArray, hs, camera, lightBall, lightDirection);
     }
 }
