@@ -122,6 +122,49 @@ export module VertexModule {
         }
     `;
 
+    export const morphBlinn = `
+        precision highp float;
+
+        //shared
+        attribute vec3 position;
+        uniform mat4 projection;
+
+        // Blinn-Phong shading
+        attribute vec3 normal;
+        uniform mat4 world;
+        uniform mat4 view;
+        uniform mat3 inverseTranspose;
+        varying vec3 worldNormal;
+        varying vec3 worldPos;
+
+        // Morphing
+        attribute vec2 uv;
+        uniform float hs1;
+        uniform float hs2;
+        uniform sampler2D hm1;
+        uniform sampler2D hm2;
+        uniform float blend;
+                
+        void main() {
+            // Morphing
+            float h1 = texture2D(hm1, uv).r * hs1;
+            float h2 = texture2D(hm2, uv).r * hs2;
+            float height = ((h1 * blend) + h2 * (1.0 - blend)) / 2.0;
+            vec3 newPosition = position + vec3(0.0, height, 0.0);
+
+            // Blinn
+            vec4 localPosition = vec4(newPosition, 1.);
+            vec4 worldPosition = world * localPosition;     
+            vec4 viewPosition  = view * worldPosition;
+            vec4 clipPosition  = projection * viewPosition;
+            worldPos = worldPosition.xyz;
+
+            // geet inverse transpose for normal transformation
+            worldNormal = inverseTranspose * normal;
+
+            gl_Position = clipPosition;
+        }
+    `;
 
 }
 
@@ -349,7 +392,7 @@ export module FragmentModule {
             vec3 pixelColor;
 
             if (cosTheta > 0.0) {
-                pixelColor = diffuseTerm + specularTerm + ambientTerm;
+                pixelColor = diffuseTerm + ambientTerm;
             }
             else {
                 pixelColor = ambientTerm;

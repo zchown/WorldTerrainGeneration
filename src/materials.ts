@@ -111,14 +111,14 @@ export module MaterialModule {
         return material;
     }
 
-    export function blinnHeight(scene: BABYLON.Scene) {
+    export function blinnMorph(scene: BABYLON.Scene) {
         let material = new BABYLON.ShaderMaterial("blinnHeight", scene, {
-            vertexSource: VertexModule.morphVert,
+            vertexSource: VertexModule.morphBlinn,
             fragmentSource: FragmentModule.blinn
         },
         {
-            attributes: ["position", "uv"],
-            uniforms: ["worldViewProjection", "hs1", "hs2", "blend", "suraceColor", "lightDirection", "lightIntensity", "lightColor", "ambientColor", "ambientIntensity", "specularColor", "specularInensity", "viewPosition"],
+            attributes: ["position", "uv", "normal"],
+            uniforms: ["projection", "world", "view", "inverseTranspose", "worldNormal", "worldPos", "hs1", "hs2", "blend"],
             samplers: ["hm1", "hm2"]
         });
         return material;
