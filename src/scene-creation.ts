@@ -9,35 +9,14 @@ export module SceneCreation {
         camera.attachControl(canvas, true);
 
 
-        let ball = BABYLON.MeshBuilder.CreateSphere("ball", {diameter: 1}, scene);
-        let m = MaterialModule.lightBall(scene);
-        m.setVector3("color", ColorModule.lightBlue);
-        ball.material = m;
-        ball.position.y = 3;
-
-        // attribute vec3 position;
-        // uniform mat4 myWorld;
-        // uniform mat4 world;
-        // uniform mat4 view;
-        // uniform mat4 projection;
-        // uniform float time;
-        // varying mat4 woldPosition;
-           
-        // ball.material = MaterialModule.createDefaultMaterial(scene);
-        // ball.position.y = 3;
-        // ball.position.x = 0;
-        // let p = BABYLON.Vector3.FromArray([0, 3, 0]);
-        // (ball.material as BABYLON.ShaderMaterial).setVector3("color", ColorModule.lightBlue);
-        // (ball.material as BABYLON.ShaderMaterial).setVector3("pos", p);
-
         let skybox = createSkybox(scene);
+
         // let foo = shiftingMaterial(scene);
-        // let foo = blinnMorph(scene, camera);
+        let foo = blinnMorph(scene, camera);
 
         var update = function() {
             (skybox.material as BABYLON.ShaderMaterial).setVector3("cameraPosition", camera.position);
-            //foo = foo();
-            // foo = foo();
+            foo = foo();
         }
         scene.registerBeforeRender(update);
 
@@ -146,10 +125,10 @@ export module SceneCreation {
 
         // blinn stuff
         const lightIntensity = 10
-        let lightDirection = new BABYLON.Vector3(5, -1, 0.7);
-        let lightBall = BABYLON.MeshBuilder.CreateSphere("lightBall", {diameter: 0.2}, scene);
+        let lightDirection = new BABYLON.Vector3(5, 3, 0.7);
+        let lightBall = BABYLON.MeshBuilder.CreateSphere("ball", {diameter: 0.2}, scene);
         lightBall.position = lightDirection;
-        lightBall.material = MaterialModule.createDefaultMaterial(scene);
+        lightBall.material = MaterialModule.lightBall(scene);
         const surfaceColor = ColorModule.hexToVec3("#892bb6");
         const lightColor = ColorModule.hexToVec3("#f4f39d");
         (lightBall.material as BABYLON.ShaderMaterial).setVector3("color", lightColor);

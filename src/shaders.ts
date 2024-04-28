@@ -170,10 +170,12 @@ export module VertexModule {
     `;
 
     export let lightVert = `
+        precision highp float;
         attribute vec3 position;
         uniform mat4 world;
         uniform mat4 view;
         uniform mat4 projection;
+        uniform vec3 pos;
                 
         void main() {
             vec4 localPosition = vec4(position, 1.);

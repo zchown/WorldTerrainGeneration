@@ -131,7 +131,7 @@ export module MaterialModule {
         },
         {
             attributes: ["position"],
-            uniforms: ["myWorld", "world", "view", "projection", "color"],
+            uniforms: ["myWorld", "world", "view", "projection", "color", "pos"],
         });
         return material;
     }
