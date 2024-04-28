@@ -4,6 +4,7 @@ export module VertexModule {
         
         attribute vec2 uv;
         attribute vec3 position;
+        uniform vec3 pos;
 
         uniform mat4 worldViewProjection;
 
@@ -11,7 +12,7 @@ export module VertexModule {
 
         void main() {
             vUV = uv;
-            gl_Position = worldViewProjection * vec4(position, 1.0);
+            gl_Position = worldViewProjection * vec4(pos, 1.0);
         }
     `;
 
@@ -271,7 +272,7 @@ export module FragmentModule {
 
         void main() {
 
-            float step = 0.01;
+            float step = 0.001;
             float left1 = texture2D(hm1, vec2(vUV.x - step, vUV.y)).r * hs1;
             float right1 = texture2D(hm1, vec2(vUV.x + step, vUV.y)).r * hs1;
             float up1 = texture2D(hm1, vec2(vUV.x, vUV.y - step)).r * hs1;
@@ -395,23 +396,22 @@ export module FragmentModule {
 
 
             // magic happens here
-            vec3 normal = normalize(cross(vec3(0.0, rightHeight - leftHeight, step), vec3(step, upHeight - downHeight, 0.0)));
+            vec3 normal = normalize(cross(vec3(0.0, rightHeight - leftHeight, step), vec3(step, upHeight - downHeight, 0.0))) / 2.0;
 
-
-            vec3 normalizedLightDirection = normalize(lightDirection);
+            vec3 normalizedLightDirection = normalize(lightDirection - worldPos);
             vec3 normalizedNormal = normalize(normal);
             vec3 normalizedViewDirection = normalize(viewPosition - worldPos);
-            vec3 normalizedhalfVector = normalize(normalizedViewDirection - normalizedLightDirection);
+            vec3 normalizedhalfVector = normalize(normalizedViewDirection + normalizedLightDirection);
 
             // def working
-            float cosTheta = dot(normalizedNormal, -normalizedLightDirection);
+            float cosTheta = dot(normalizedNormal, normalizedLightDirection);
             float cosRho = max(0.0, dot(normalizedNormal, normalizedhalfVector));
             vec3 specularTerm = (pow(cosRho, specularIntensity)) * specularColor;
             vec3 diffuseTerm = lightIntensity * lightColor * surfaceColor * cosTheta;
             vec3 ambientTerm = ambientIntensity * ambientLightColor;
             vec3 pixelColor;
             if (cosTheta > 0.0) {
-                pixelColor = diffuseTerm + + ambientTerm;
+                pixelColor = diffuseTerm + specularTerm + ambientTerm;
             }
             else {
                 pixelColor = ambientTerm;

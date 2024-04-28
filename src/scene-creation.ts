@@ -7,9 +7,6 @@ export module SceneCreation {
         let scene = new BABYLON.Scene(engine);
         let camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI/2, 1, 10, new BABYLON.Vector3(0, 0, 0), scene);
         camera.attachControl(canvas, true);
-        let light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-        light.intensity = 0.7;
-
 
         let skybox = createSkybox(scene);
         // let foo = shiftingMaterial(scene);
@@ -126,11 +123,17 @@ export module SceneCreation {
         let b = 0.0;
 
         // blinn stuff
-        const lightIntensity = 3.0;
-        const lightDirection = new BABYLON.Vector3(-0.5, -1, 0.7);
+        const lightIntensity = 10
+        let lightDirection = new BABYLON.Vector3(500, -1, 0.7);
+        let lightBall = BABYLON.MeshBuilder.CreateSphere("lightBall", {diameter: 0.2}, scene);
+        lightBall.position = lightDirection;
+        lightBall.material = MaterialModule.createDefaultMaterial(scene);
         const surfaceColor = ColorModule.hexToVec3("#892bb6");
         const lightColor = ColorModule.hexToVec3("#f4f39d");
-        const ambientIntensity = 0.8;
+        (lightBall.material as BABYLON.ShaderMaterial).setVector3("color", lightColor);
+        (lightBall.material as BABYLON.ShaderMaterial).setVector3("pos", lightDirection);
+        lightBall.material.backFaceCulling = false;
+        const ambientIntensity = 0.0;
         const ambientLightColor = ColorModule.hexToVec3("#892bb6");
         const specularColor = ColorModule.hexToVec3("#FFFFFF");
         let world4x4 = ground.getWorldMatrix();
@@ -146,11 +149,11 @@ export module SceneCreation {
         material.setFloat("ambientIntensity", ambientIntensity);
         material.setVector3("viewPosition", camera.position);
         material.setVector3("specularColor", specularColor);
-        material.setFloat("specularIntensity", 0.0);
+        material.setFloat("specularIntensity", 50.0);
 
         ground.material = material;
 
-        let foo = function(m: BABYLON.ShaderMaterial, texArray: BABYLON.Texture[], hs: number[], b: number, camera: BABYLON.ArcRotateCamera) {
+        let foo = function(m: BABYLON.ShaderMaterial, texArray: BABYLON.Texture[], hs: number[], b: number, camera: BABYLON.ArcRotateCamera, lb: BABYLON.Mesh, ld: BABYLON.Vector3) {
             let curry = function(b: number) {
                 let doubleCurry = function() {
                     // morph stuff
@@ -167,6 +170,11 @@ export module SceneCreation {
 
                     // blinn stuff
                     m.setVector3("viewPosition", camera.position);
+                    let s = new BABYLON.Vector3(-0.005, 0, 0);
+                    ld = ld.add(s);
+                    (lb.material as BABYLON.ShaderMaterial).setVector3("pos", ld);
+                    lb.position = ld;
+                    m.setVector3("lightDirection", ld);
 
 
                     return curry(b + 0.005);
@@ -175,6 +183,6 @@ export module SceneCreation {
             }
             return curry(0);
         }
-        return foo(material, texArray, hs, b, camera);
+        return foo(material, texArray, hs, b, camera, lightBall, lightDirection);
     }
 }

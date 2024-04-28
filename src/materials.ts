@@ -9,7 +9,7 @@ export module MaterialModule {
         },
         {
             attributes: ["position"],
-            uniforms: ["worldViewProjection", "color"]
+            uniforms: ["worldViewProjection", "color", "pos"]
         });
 
         return defaultMaterial;
