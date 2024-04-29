@@ -483,7 +483,7 @@ export module FragmentModule {
             ySlope = ySlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
             float height = (vPositionW.y);
 
-            float n1 = texture2D(noise, vUV).r;
+            float n1 = texture2D(noise, vUV * 2.0).r;
 
             float h = height;
             if (hs1 > hs2) {
@@ -494,7 +494,7 @@ export module FragmentModule {
             if (height * h >(13.0 + n1)) {
                 gl_FragColor = texture2D(snow, vUV);
             }
-            else if ((height * h > (12.0 - n1)) || max(xSlope, ySlope) > 0.4) {
+            else if ((height * h > (11.5 - (n1 * 4.0))) || max(xSlope, ySlope) > 0.4) {
                 gl_FragColor = texture2D(rock, vUV * 10.0);
             }
             else {
