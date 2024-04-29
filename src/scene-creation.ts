@@ -190,7 +190,7 @@ export module SceneCreation {
     }
 
      const mophingTextures = (scene: BABYLON.Scene) => {
-        let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 6, subdivisions: 1000}, scene);
+        let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 6, subdivisions: 2000}, scene);
         ground.position.y = 0;
 
 
