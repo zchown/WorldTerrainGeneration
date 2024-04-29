@@ -146,6 +146,7 @@ export module VertexModule {
         uniform sampler2D hm2;
         uniform float blend;
         varying vec2 vUV;
+        varying vec3 vPositionW;
                 
         void main() {
             // Morphing
@@ -154,6 +155,7 @@ export module VertexModule {
             float height = ((h1 * blend) + h2 * (1.0 - blend)) / 2.0;
             vec3 newPosition = position + vec3(0.0, height, 0.0);
             vUV = uv;
+            vPositionW = newPosition;
 
             // Blinn
             vec4 localPosition = vec4(newPosition, 1.);
@@ -533,7 +535,6 @@ export module FragmentModule {
         uniform sampler2D tree;
         uniform sampler2D noise;
 
-        uniform vec3 surfaceColor;
         uniform vec3 lightDirection;
         uniform float lightIntensity;
         uniform vec3 lightColor;
@@ -577,7 +578,7 @@ export module FragmentModule {
 
             float n1 = texture2D(noise, vUV * 2.0).r;
 
-            vec3 sc = vec3(0.0, 0.0, 0.0);
+            vec4 sc = vec4(0.0, 0.0, 0.0, 1.0);
 
             float h = height;
             if (hs1 > hs2) {
@@ -606,7 +607,7 @@ export module FragmentModule {
 
                 }
             }
-            surfaceColor = sc;
+            vec3 surfaceColor = sc.rgb;
             // magic happens here
             vec3 normal = normalize(cross(vec3(0.0, rightHeight - leftHeight, step), vec3(step, upHeight - downHeight, 0.0))) / 2.0;
 

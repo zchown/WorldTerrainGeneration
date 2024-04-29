@@ -274,7 +274,7 @@ export module SceneCreation {
         let r2 = new BABYLON.Texture("./assets/textures/random2.jpg", scene);
 
 
-        let material = MaterialModule.morphTexture(scene);
+        let material = MaterialModule.morphTextureBlinn(scene);
         material.setTexture("grass", grass);
         material.setTexture("rock", rock);
         material.setTexture("snow", snow);
@@ -292,10 +292,9 @@ export module SceneCreation {
         let texArray = [texture1, texture2, texture3, texture4];
         let hs = [10.0, 10.0, 10.0, 2.0];
         let b = 0.0;
-        const lightIntensity = 0
+        const lightIntensity = 0.7;
         let lightDirection = new BABYLON.Vector3(5, 3, 0.7);
-        const ambientIntensity = 0.0;
-        const surfaceColor = ColorModule.hexToVec3("#892bb6");
+        const ambientIntensity = 0.2;
         const lightColor = ColorModule.hexToVec3("#f4f39d");
         const ambientLightColor = ColorModule.hexToVec3("#892bb6");
         const specularColor = ColorModule.hexToVec3("#FFFFFF");
@@ -304,7 +303,6 @@ export module SceneCreation {
         world4x4.toNormalMatrix(normalMatrix4x4);
         let inverseTranspose3x3 = BABYLON.Matrix.GetAsMatrix3x3(world4x4);
         material.setMatrix3x3("inverseTranspose", inverseTranspose3x3);
-        material.setVector3("surfaceColor", surfaceColor);
         material.setVector3("lightDirection", lightDirection);
         material.setFloat("lightIntensity", lightIntensity);
         material.setVector3("lightColor", lightColor);

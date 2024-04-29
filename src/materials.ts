@@ -156,7 +156,7 @@ export module MaterialModule {
         },
         {
             attributes: ["position", "uv", "normal"],
-            uniforms: ["projection", "world", "view", "inverseTranspose", "worldNormal", "worldPos", "hs1", "hs2", "blend"],
+            uniforms: ["projection", "world", "view", "inverseTranspose", "worldNormal", "worldPos", "hs1", "hs2", "blend", "lightDirection", "lightColor", "ambientColor", "specularColor", "specularIntensity", "ambientIntensity", "ambientColor", "viewPosition"],
             samplers: ["hm1", "hm2", "grass", "rock", "snow", "tree", "rnoise", "rnoise2", "noise"]
         });
         return material;
