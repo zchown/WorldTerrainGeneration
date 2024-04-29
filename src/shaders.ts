@@ -509,15 +509,129 @@ export module FragmentModule {
                     }
                 } else {
                     gl_FragColor = texture2D(grass, vUV * 10.0);
-                    // gl_FragColor = texture2D(grass, vUV);
 
                 }
-                // gl_FragColor = vec4(xSlope, ySlope, height, 1.0);
             }
+        }
+    `;
 
-            // gl_FragColor = vec4(xSlope, ySlope, height, 1.0);
+    export const allOfIt = `
+        precision highp float;
+
+        uniform sampler2D hm1;
+        uniform sampler2D hm2;
+
+        uniform float blend;
+        uniform float hs1;
+        uniform float hs2;
+
+        uniform sampler2D grass;
+        uniform sampler2D rock;
+        uniform sampler2D snow;
+        uniform sampler2D rnoise;
+        uniform sampler2D rnoise2;
+        uniform sampler2D tree;
+        uniform sampler2D noise;
+
+        uniform vec3 surfaceColor;
+        uniform vec3 lightDirection;
+        uniform float lightIntensity;
+        uniform vec3 lightColor;
+        uniform vec3 ambientLightColor;
+        uniform float ambientIntensity;
+        uniform vec3 specularColor;
+        uniform float specularIntensity;
+        uniform vec3 viewPosition;
+
+        varying vec3 worldNormal;
+        varying vec3 worldPos;
+
+
+        varying vec2 vUV;
+        varying vec3 vPositionW;
+
+
+        void main() {
+            float step = 0.01;
+            float left1 = texture2D(hm1, vec2(vUV.x - step, vUV.y)).r * hs1;
+            float right1 = texture2D(hm1, vec2(vUV.x + step, vUV.y)).r * hs1;
+            float up1 = texture2D(hm1, vec2(vUV.x, vUV.y - step)).r * hs1;
+            float down1 = texture2D(hm1, vec2(vUV.x, vUV.y + step)).r * hs1;
+            float left2 = texture2D(hm2, vec2(vUV.x - step, vUV.y)).r * hs2;
+            float right2 = texture2D(hm2, vec2(vUV.x + step, vUV.y)).r * hs2;
+            float up2 = texture2D(hm2, vec2(vUV.x, vUV.y - step)).r * hs2;
+            float down2 = texture2D(hm2, vec2(vUV.x, vUV.y + step)).r * hs2;
+            float rightHeight = ((right1 * blend) + right2 * (1.0 - blend)) / 2.0;
+            float leftHeight = ((left1 * blend) + left2 * (1.0 - blend)) / 2.0;
+            float upHeight = ((up1 * blend) + up2 * (1.0 - blend)) / 2.0;
+            float downHeight = ((down1 * blend) + down2 * (1.0 - blend)) / 2.0;
+            float dx = (rightHeight - leftHeight);
+            float dy = (upHeight - downHeight);
+            float xSlope = atan(dx);
+            float ySlope = atan(dy);
+            xSlope = xSlope * 5.0;
+            xSlope = xSlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
+            ySlope = ySlope * 5.0;
+            ySlope = ySlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
+            float height = (vPositionW.y);
+
+            float n1 = texture2D(noise, vUV * 2.0).r;
+
+            vec3 sc = vec3(0.0, 0.0, 0.0);
+
+            float h = height;
+            if (hs1 > hs2) {
+                h = hs1;
+            } else {
+                h = hs2;
+            }
+            if (height * h >(13.0 + n1)) {
+                sc = texture2D(snow, vUV);
+            }
+            else if ((height * h > (11.5 - (n1 * 4.0))) || max(xSlope, ySlope) > 0.4) {
+                sc = texture2D(rock, vUV * 10.0) + n1 * 0.05;
+            }
+            else {
+                if (texture2D(rnoise, vUV).y > 0.2) {
+                    if (texture2D(rnoise2, vUV).x > (0.45 + (0.1 * n1))) {
+                        sc = texture2D(tree, vUV * 10.0);
+                    }
+                    else {
+                        vec4 g = texture2D(grass, vUV * 3.0);
+                        vec4 t = texture2D(tree, vUV * 5.0);
+                        sc = mix(g, t, 0.5);
+                    }
+                } else {
+                    sc = texture2D(grass, vUV * 10.0);
+
+                }
+            }
+            surfaceColor = sc;
+            // magic happens here
+            vec3 normal = normalize(cross(vec3(0.0, rightHeight - leftHeight, step), vec3(step, upHeight - downHeight, 0.0))) / 2.0;
+
+            vec3 normalizedLightDirection = normalize(lightDirection - worldPos);
+            vec3 normalizedNormal = normalize(normal);
+            vec3 normalizedViewDirection = normalize(viewPosition - worldPos);
+            vec3 normalizedhalfVector = normalize(normalizedViewDirection + normalizedLightDirection);
+
+            // def working
+            float cosTheta = dot(normalizedNormal, normalizedLightDirection);
+            float cosRho = max(0.0, dot(normalizedNormal, normalizedhalfVector));
+            vec3 specularTerm = (pow(cosRho, specularIntensity)) * specularColor;
+            vec3 diffuseTerm = lightIntensity * lightColor * surfaceColor * cosTheta;
+            vec3 ambientTerm = ambientIntensity * ambientLightColor;
+            vec3 pixelColor;
+            if (cosTheta > 0.0) {
+                pixelColor = diffuseTerm + specularTerm + ambientTerm;
+            }
+            else {
+                pixelColor = ambientTerm;
+            }
+            gl_FragColor = vec4(pixelColor, 1);
 
         }
+
     `;
 
 }

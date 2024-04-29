@@ -11,10 +11,12 @@ export module SceneCreation {
 
         let skybox = createSkybox(scene);
 
-        let foo = mophingTextures(scene);
+        // let foo = mophingTextures(scene);
 
         // let foo = shiftingMaterial(scene);
         // let foo = blinnMorph(scene, camera);
+        let foo = bigScene(scene, camera);
+
 
         var update = function() {
             (skybox.material as BABYLON.ShaderMaterial).setVector3("cameraPosition", camera.position);
@@ -253,5 +255,91 @@ export module SceneCreation {
         }
         return foo(material, texArray, hs, b);
     }
+    const bigScene = (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera) => {
+        let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 6, subdivisions: 2000}, scene);
+        ground.position.y = 0;
 
+
+        let texture1 = new BABYLON.Texture("./assets/heightmaps/Heightmap_01_Mountain.png", scene);
+        let texture2 = new BABYLON.Texture("./assets/heightmaps/Heightmap_06_Canyon.png", scene);
+        let texture3 = new BABYLON.Texture("./assets/heightmaps/Heightmap_02_Hills.png", scene);
+        let texture4 = new BABYLON.Texture("./assets/heightmaps/new.png", scene);
+
+        let noise = new BABYLON.Texture("./assets/textures/noisy.png", scene);
+        let grass = new BABYLON.Texture("./assets/textures/grass.jpg", scene);
+        let rock = new BABYLON.Texture("./assets/textures/rock.jpg", scene);
+        let snow = new BABYLON.Texture("./assets/textures/snow.jpg", scene);
+        let r = new BABYLON.Texture("./assets/textures/random.png", scene);
+        let tree = new BABYLON.Texture("./assets/textures/tree.jpg", scene);
+        let r2 = new BABYLON.Texture("./assets/textures/random2.jpg", scene);
+
+
+        let material = MaterialModule.morphTexture(scene);
+        material.setTexture("grass", grass);
+        material.setTexture("rock", rock);
+        material.setTexture("snow", snow);
+        material.setTexture("rnoise", r);
+        material.setTexture("rnoise2", r2);
+        material.setTexture("tree", tree);
+        material.setTexture("noise", noise);
+        material.setFloat("hs1", 15.0);
+        material.setFloat("hs2", 15.0);
+        material.setTexture("hm1", texture1);
+        material.setTexture("hm2", texture2);
+        material.setFloat("blend", 1.0);
+        material.backFaceCulling = false;
+
+        let texArray = [texture1, texture2, texture3, texture4];
+        let hs = [10.0, 10.0, 10.0, 2.0];
+        let b = 0.0;
+        const lightIntensity = 0
+        let lightDirection = new BABYLON.Vector3(5, 3, 0.7);
+        const ambientIntensity = 0.0;
+        const surfaceColor = ColorModule.hexToVec3("#892bb6");
+        const lightColor = ColorModule.hexToVec3("#f4f39d");
+        const ambientLightColor = ColorModule.hexToVec3("#892bb6");
+        const specularColor = ColorModule.hexToVec3("#FFFFFF");
+        let world4x4 = ground.getWorldMatrix();
+        let normalMatrix4x4 = new BABYLON.Matrix();
+        world4x4.toNormalMatrix(normalMatrix4x4);
+        let inverseTranspose3x3 = BABYLON.Matrix.GetAsMatrix3x3(world4x4);
+        material.setMatrix3x3("inverseTranspose", inverseTranspose3x3);
+        material.setVector3("surfaceColor", surfaceColor);
+        material.setVector3("lightDirection", lightDirection);
+        material.setFloat("lightIntensity", lightIntensity);
+        material.setVector3("lightColor", lightColor);
+        material.setVector3("ambientLightColor", ambientLightColor);
+        material.setFloat("ambientIntensity", ambientIntensity);
+        material.setVector3("viewPosition", camera.position);
+        material.setVector3("specularColor", specularColor);
+        material.setFloat("specularIntensity", 0.0);
+
+
+        ground.material = material;
+
+        let foo = function(m: BABYLON.ShaderMaterial, texArray: BABYLON.Texture[], hs: number[], b: number) {
+            let curry = function(b: number) {
+                let doubleCurry = function() {
+                    let b2 = b;
+                    let t = texArray.length;
+
+                    b2 = b % 1.0;
+
+                    let t1 = Math.floor(b / 1) % t;
+                    let t2 = Math.floor((b / 1) + 1) % t;
+
+                    m.setTexture("hm1", texArray[t2]);
+                    m.setTexture("hm2", texArray[t1]);
+                    m.setFloat("hs1", hs[t2]);
+                    m.setFloat("hs2", hs[t1]);
+
+                    m.setFloat("blend", b2);
+                    return curry(b + 0.005);
+                }
+                return doubleCurry;
+            }
+            return curry(0);
+        }
+        return foo(material, texArray, hs, b);
+    }
 }
