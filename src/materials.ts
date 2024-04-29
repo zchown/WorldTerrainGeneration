@@ -135,4 +135,17 @@ export module MaterialModule {
         });
         return material;
     }
+
+    export function morphTexture(scene: BABYLON.Scene) {
+        let material = new BABYLON.ShaderMaterial("morphTextured", scene, {
+            vertexSource: VertexModule.morphVert,
+            fragmentSource: FragmentModule.morphTextureColor,
+        },
+        {
+            attributes: ["position", "uv"],
+            uniforms: ["worldViewProjection", "hs1", "hs2", "blend"],
+            samplers: ["hm1", "hm2", "grass", "rock", "snow", "tree", "rnoise", "rnoise2"]
+        });
+        return material;
+    }
 }

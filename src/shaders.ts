@@ -438,4 +438,84 @@ export module FragmentModule {
 
     `;
 
+    export const morphTextureColor = `
+        precision highp float;
+
+        uniform sampler2D hm1;
+        uniform sampler2D hm2;
+
+        uniform float blend;
+        uniform float hs1;
+        uniform float hs2;
+
+        uniform sampler2D grass;
+        uniform sampler2D rock;
+        uniform sampler2D snow;
+        uniform sampler2D rnoise;
+        uniform sampler2D rnoise2;
+        uniform sampler2D tree;
+
+        varying vec2 vUV;
+        varying vec3 vPositionW;
+
+        void main() {
+            float step = 0.01;
+            float left1 = texture2D(hm1, vec2(vUV.x - step, vUV.y)).r * hs1;
+            float right1 = texture2D(hm1, vec2(vUV.x + step, vUV.y)).r * hs1;
+            float up1 = texture2D(hm1, vec2(vUV.x, vUV.y - step)).r * hs1;
+            float down1 = texture2D(hm1, vec2(vUV.x, vUV.y + step)).r * hs1;
+            float left2 = texture2D(hm2, vec2(vUV.x - step, vUV.y)).r * hs2;
+            float right2 = texture2D(hm2, vec2(vUV.x + step, vUV.y)).r * hs2;
+            float up2 = texture2D(hm2, vec2(vUV.x, vUV.y - step)).r * hs2;
+            float down2 = texture2D(hm2, vec2(vUV.x, vUV.y + step)).r * hs2;
+            float rightHeight = ((right1 * blend) + right2 * (1.0 - blend)) / 2.0;
+            float leftHeight = ((left1 * blend) + left2 * (1.0 - blend)) / 2.0;
+            float upHeight = ((up1 * blend) + up2 * (1.0 - blend)) / 2.0;
+            float downHeight = ((down1 * blend) + down2 * (1.0 - blend)) / 2.0;
+            float dx = (rightHeight - leftHeight);
+            float dy = (upHeight - downHeight);
+            float xSlope = atan(dx);
+            float ySlope = atan(dy);
+            xSlope = xSlope * 5.0;
+            xSlope = xSlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
+            ySlope = ySlope * 5.0;
+            ySlope = ySlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
+            float height = (vPositionW.y);
+
+
+            float h = height;
+            if (hs1 > hs2) {
+                h = hs1;
+            } else {
+                h = hs2;
+            }
+            if (height * h >13.0) {
+                gl_FragColor = texture2D(snow, vUV);
+            }
+            else if ((height * h > 12.0) || max(xSlope, ySlope) > 0.4) {
+                gl_FragColor = texture2D(rock, vUV * 10.0);
+            }
+            else {
+                if (texture2D(rnoise, vUV).y > 0.2) {
+                    if (texture2D(rnoise2, vUV).x > 0.5) {
+                        gl_FragColor = texture2D(tree, vUV * 10.0);
+                    }
+                    else {
+                        vec4 g = texture2D(grass, vUV * 3.0);
+                        vec4 t = texture2D(tree, vUV * 5.0);
+                        gl_FragColor = mix(g, t, 0.5);
+                    }
+                } else {
+                    gl_FragColor = texture2D(grass, vUV * 10.0);
+                    // gl_FragColor = texture2D(grass, vUV);
+
+                }
+                // gl_FragColor = vec4(xSlope, ySlope, height, 1.0);
+            }
+
+            // gl_FragColor = vec4(xSlope, ySlope, height, 1.0);
+
+        }
+    `;
+
 }
