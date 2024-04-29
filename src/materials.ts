@@ -144,7 +144,7 @@ export module MaterialModule {
         {
             attributes: ["position", "uv"],
             uniforms: ["worldViewProjection", "hs1", "hs2", "blend"],
-            samplers: ["hm1", "hm2", "grass", "rock", "snow", "tree", "rnoise", "rnoise2"]
+            samplers: ["hm1", "hm2", "grass", "rock", "snow", "tree", "rnoise", "rnoise2", "noise"]
         });
         return material;
     }

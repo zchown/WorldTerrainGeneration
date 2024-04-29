@@ -197,14 +197,16 @@ export module SceneCreation {
         let texture1 = new BABYLON.Texture("./assets/heightmaps/Heightmap_01_Mountain.png", scene);
         let texture2 = new BABYLON.Texture("./assets/heightmaps/Heightmap_06_Canyon.png", scene);
         let texture3 = new BABYLON.Texture("./assets/heightmaps/Heightmap_02_Hills.png", scene);
-        let texture4 = new BABYLON.Texture("./assets/heightmaps/Heightmap_09_Archipelago.png", scene);
+        let texture4 = new BABYLON.Texture("./assets/heightmaps/new.png", scene);
 
+        let noise = new BABYLON.DynamicTexture("noise", {width: 512, height: 512}, scene);
         let grass = new BABYLON.Texture("./assets/textures/grass.jpg", scene);
         let rock = new BABYLON.Texture("./assets/textures/rock.jpg", scene);
         let snow = new BABYLON.Texture("./assets/textures/snow.jpg", scene);
         let r = new BABYLON.Texture("./assets/textures/random.png", scene);
         let tree = new BABYLON.Texture("./assets/textures/tree.jpg", scene);
         let r2 = new BABYLON.Texture("./assets/textures/random2.jpg", scene);
+    
 
         let material = MaterialModule.morphTexture(scene);
         material.setTexture("grass", grass);
@@ -218,10 +220,11 @@ export module SceneCreation {
         material.setTexture("hm1", texture1);
         material.setTexture("hm2", texture2);
         material.setFloat("blend", 1.0);
+        material.setTexture("noise", noise);
         material.backFaceCulling = false;
 
         let texArray = [texture1, texture2, texture3, texture4];
-        let hs = [10.0, 10.0, 10.0, 10.0];
+        let hs = [10.0, 10.0, 10.0, 2.0];
         let b = 0.0;
         ground.material = material;
 

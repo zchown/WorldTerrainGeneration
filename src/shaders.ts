@@ -454,6 +454,7 @@ export module FragmentModule {
         uniform sampler2D rnoise;
         uniform sampler2D rnoise2;
         uniform sampler2D tree;
+        uniform sampler2D noise;
 
         varying vec2 vUV;
         varying vec3 vPositionW;
@@ -482,6 +483,7 @@ export module FragmentModule {
             ySlope = ySlope / (3.14159265359 / 2.0); // Normalize to [0, 1] range
             float height = (vPositionW.y);
 
+            float n1 = texture2D(noise, vUV).r;
 
             float h = height;
             if (hs1 > hs2) {
@@ -489,15 +491,15 @@ export module FragmentModule {
             } else {
                 h = hs2;
             }
-            if (height * h >13.0) {
+            if (height * h >(13.0 + n1)) {
                 gl_FragColor = texture2D(snow, vUV);
             }
-            else if ((height * h > 12.0) || max(xSlope, ySlope) > 0.4) {
+            else if ((height * h > (12.0 - n1)) || max(xSlope, ySlope) > 0.4) {
                 gl_FragColor = texture2D(rock, vUV * 10.0);
             }
             else {
                 if (texture2D(rnoise, vUV).y > 0.2) {
-                    if (texture2D(rnoise2, vUV).x > 0.5) {
+                    if (texture2D(rnoise2, vUV).x > (0.45 + (0.1 * n1))) {
                         gl_FragColor = texture2D(tree, vUV * 10.0);
                     }
                     else {
