@@ -164,7 +164,7 @@ export module MaterialModule {
 
     export function lightTest(scene: BABYLON.Scene) {
         let material = new BABYLON.ShaderMaterial("lightTest", scene, {
-            vertexSource: VertexModule.lightVert,
+            vertexSource: VertexModule.rotate,
             fragmentSource: FragmentModule. flat,
         },
         {
