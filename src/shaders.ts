@@ -603,7 +603,7 @@ export module FragmentModule {
 
                 }
             }
-            vec3 lpos = vec3(-(sin(time)+ cos(time)) * 5.0, abs((cos(time) - sin(time)) * 2.0) + 2.0, -(sin(time) + cos(time)) * 5.0);
+            vec3 lpos = vec3((sin(time)+ cos(time)) * 5.0, abs((cos(time) - sin(time)) * 2.0) + 2.0, (sin(time) + cos(time)) * 5.0);
             
             vec3 surfaceColor = sc.rgb;
             // magic happens here
