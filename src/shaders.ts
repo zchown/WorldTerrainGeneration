@@ -628,9 +628,12 @@ export module FragmentModule {
             }
             else {
                 pixelColor = ambientTerm;
+                // pixelColor = vec3(1.0, 0.0, 0.0);
             }
-            gl_FragColor = vec4(pixelColor, 1);
 
+            pixelColor = pixelColor * sc.rgb;
+            gl_FragColor = vec4(pixelColor, 1);
+            // gl_FragColor = vec4(sc.rgb, 1);
         }
 
     `;
