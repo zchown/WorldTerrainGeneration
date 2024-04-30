@@ -131,7 +131,7 @@ export module MaterialModule {
         },
         {
             attributes: ["position"],
-            uniforms: ["myWorld", "world", "view", "projection", "color", "pos"],
+            uniforms: ["worldViewProjection", "color", "time"]
         });
         return material;
     }
@@ -157,20 +157,9 @@ export module MaterialModule {
         {
             attributes: ["position", "uv", "normal"],
             uniforms: ["projection", "world", "view", "inverseTranspose", "worldNormal", "worldPos", "hs1", "hs2", "blend", "lightDirection", "lightColor", "ambientColor", "specularColor", "specularIntensity", "ambientIntensity", "ambientColor", "viewPosition"],
-            samplers: ["hm1", "hm2", "grass", "rock", "snow", "tree", "rnoise", "rnoise2", "noise"]
+            samplers: ["hm1", "hm2", "grass", "rock", "snow", "tree", "rnoise", "rnoise2", "noise", "time"]
         });
         return material;
     }
 
-    export function lightTest(scene: BABYLON.Scene) {
-        let material = new BABYLON.ShaderMaterial("lightTest", scene, {
-            vertexSource: VertexModule.rotate,
-            fragmentSource: FragmentModule. flat,
-        },
-        {
-            attributes: ["position"],
-            uniforms: ["color", "time"],
-        });
-        return material;
-    }
 }

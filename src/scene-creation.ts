@@ -16,13 +16,15 @@ export module SceneCreation {
         // let foo = shiftingMaterial(scene);
         // let foo = blinnMorph(scene, camera);
         let foo = bigScene(scene, camera);
-        // let foo = lightTest(scene);
+        let foo2 = lightTest(scene);
 
 
         var update = function() {
             (skybox.material as BABYLON.ShaderMaterial).setVector3("cameraPosition", camera.position);
             foo = foo();
+            foo2 = foo2();
         }
+
         scene.registerBeforeRender(update);
 
         return scene;
@@ -30,16 +32,18 @@ export module SceneCreation {
 
     const lightTest = (scene: BABYLON.Scene) => {
         let material = MaterialModule.lightBall(scene);
-        let sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
-        material.setVector3("color", ColorModule.lightBlue);
+        let sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 0.5}, scene);
+        material.setVector3("color", ColorModule.hexToVec3("#f4f39d"));
+
         sphere.material = material;
-        sphere.position.y = 4;
-        sphere.position.x = 4;
+        sphere.position.y = 0;
+        sphere.position.x = 0;
+        sphere.position.z = 0;
 
         const curry = function(m: BABYLON.ShaderMaterial, t: number) {
             let doubleCurry = function() {
                 m.setFloat("time", t);
-                return curry(m, t + 0.001);
+                return curry(m, t + 0.01);
             }
             return doubleCurry;
         }
@@ -310,9 +314,9 @@ export module SceneCreation {
         let texArray = [texture1, texture2, texture3, texture4];
         let hs = [10.0, 10.0, 10.0, 2.0];
         let b = 0.0;
-        const lightIntensity = 0.9;
-        let lightDirection = new BABYLON.Vector3(5, 3, 0.7);
-        const ambientIntensity = 0.6;
+        const lightIntensity = 0.7;
+        let lightDirection = new BABYLON.Vector3(0, 0, 0);
+        const ambientIntensity = 0.3;
         const lightColor = ColorModule.hexToVec3("#f4f39d");
         const ambientLightColor = ColorModule.hexToVec3("#FFFFFF");
         const specularColor = ColorModule.hexToVec3("#FFFFFF");
@@ -329,12 +333,13 @@ export module SceneCreation {
         material.setVector3("viewPosition", camera.position);
         material.setVector3("specularColor", specularColor);
         material.setFloat("specularIntensity", 2.0);
+        material.setFloat("time", 0.0);
 
 
         ground.material = material;
 
         let foo = function(m: BABYLON.ShaderMaterial, texArray: BABYLON.Texture[], hs: number[], b: number) {
-            let curry = function(b: number) {
+            let curry = function(b: number, time: number) {
                 let doubleCurry = function() {
                     let b2 = b;
                     let t = texArray.length;
@@ -348,13 +353,14 @@ export module SceneCreation {
                     m.setTexture("hm2", texArray[t1]);
                     m.setFloat("hs1", hs[t2]);
                     m.setFloat("hs2", hs[t1]);
+                    m.setFloat("time", time);
 
                     m.setFloat("blend", b2);
-                    return curry(b + 0.005);
+                    return curry(b + 0.001, time + 0.01);
                 }
                 return doubleCurry;
             }
-            return curry(0);
+            return curry(0, 0.0);
         }
         return foo(material, texArray, hs, b);
     }

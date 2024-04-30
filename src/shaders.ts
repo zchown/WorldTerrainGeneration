@@ -16,26 +16,6 @@ export module VertexModule {
         }
     `;
 
-    export const rotate = `
-        precision highp float;
-        attribute vec3 position;
-        // uniform mat4 world;
-        // uniform mat4 view;
-        // uniform mat4 projection;
-        // uniform vec3 pos;
-        uniform mat4 worldViewProjection;
-        uniform float time;
-                
-        void main() {
-            // vec3 newPosition = vec3(position.x * cos(time) - position.z * sin(time), position.y, position.x * sin(time) + position.z * cos(time));
-            // vec4 localPosition = vec4(position, 1.);
-            // vec4 worldPosition = world * localPosition;     
-            // vec4 viewPosition  = view * worldPosition;
-            // vec4 clipPosition  = projection * viewPosition;
-            // gl_Position = clipPosition;
-            gl_Position = worldViewProjection * vec4(position, 1.0);
-        }
-    `;
 
     export const heightMap = `
         precision highp float;
@@ -192,40 +172,14 @@ export module VertexModule {
         }
     `;
 
-    export let lightVert = `
-        precision highp float;
+    export const lightVert = `
         attribute vec3 position;
-        uniform mat4 world;
-        uniform mat4 view;
-        uniform mat4 projection;
-        uniform vec3 pos;
+        uniform mat4 worldViewProjection;
         uniform float time;
-                
-        void main() {
-            float rotationAngle = time;
-            vec3 rotationAxis = vec3(1.0, 1.0, 1.0);
-            vec3 fixedPosition = vec3(0.0, 0.0, 0.0);
-            mat3 rotationMatrix = mat3(
-                cos(rotationAngle) + rotationAxis.x * rotationAxis.x * (1.0 - cos(rotationAngle)),
-                rotationAxis.x * rotationAxis.y * (1.0 - cos(rotationAngle)) - rotationAxis.z * sin(rotationAngle),
-                rotationAxis.x * rotationAxis.z * (1.0 - cos(rotationAngle)) + rotationAxis.y * sin(rotationAngle),
-                
-                rotationAxis.y * rotationAxis.x * (1.0 - cos(rotationAngle)) + rotationAxis.z * sin(rotationAngle),
-                cos(rotationAngle) + rotationAxis.y * rotationAxis.y * (1.0 - cos(rotationAngle)),
-                rotationAxis.y * rotationAxis.z * (1.0 - cos(rotationAngle)) - rotationAxis.x * sin(rotationAngle),
-                
-                rotationAxis.z * rotationAxis.x * (1.0 - cos(rotationAngle)) - rotationAxis.y * sin(rotationAngle),
-                rotationAxis.z * rotationAxis.y * (1.0 - cos(rotationAngle)) + rotationAxis.x * sin(rotationAngle),
-                cos(rotationAngle) + rotationAxis.z * rotationAxis.z * (1.0 - cos(rotationAngle))
-            );
-        
-            vec3 newPosition = rotationMatrix * (position - fixedPosition) + fixedPosition;
 
-            vec4 localPosition = vec4(newPosition, 1.);
-            vec4 worldPosition = world * localPosition;     
-            vec4 viewPosition  = view * worldPosition;
-            vec4 clipPosition  = projection * viewPosition;
-            gl_Position = clipPosition;
+        void main() {
+            vec4 pos = vec4((sin(time)+ cos(time)) * 5.0 + position.x, abs((cos(time) - sin(time)) * 2.0 + position.y) + 2.0, (sin(time) + cos(time)) * 5.0 + position.z, 1.0);
+            gl_Position = worldViewProjection * pos;
         }
     `;
 
@@ -233,12 +187,12 @@ export module VertexModule {
 
 export module FragmentModule {
     export const flat = `
-    precision highp float;
-    uniform vec3 color;
+        precision highp float;
+        uniform vec3 color;
 
-    void main(void) {
-        gl_FragColor = vec4(color, 1.0);
-    }
+        void main(void) {
+            gl_FragColor = vec4(color, 1.0);
+        }
     `;
 
     export const heightShading = `
@@ -460,7 +414,7 @@ export module FragmentModule {
 
             vec3 normalizedLightDirection = normalize(lightDirection - worldPos);
             vec3 normalizedNormal = normalize(normal);
-            vec3 normalizedViewDirection = normalize(-viewPosition - worldPos);
+            vec3 normalizedViewDirection = normalize(viewPosition - worldPos);
             vec3 normalizedhalfVector = normalize(normalizedViewDirection + normalizedLightDirection);
 
             // def working
@@ -584,6 +538,7 @@ export module FragmentModule {
         uniform vec3 specularColor;
         uniform float specularIntensity;
         uniform vec3 viewPosition;
+        uniform float time;
 
         varying vec3 worldNormal;
         varying vec3 worldPos;
@@ -648,21 +603,22 @@ export module FragmentModule {
 
                 }
             }
+            vec3 lpos = vec3(-(sin(time)+ cos(time)) * 5.0, abs((cos(time) - sin(time)) * 2.0) + 2.0, -(sin(time) + cos(time)) * 5.0);
+            
             vec3 surfaceColor = sc.rgb;
             // magic happens here
             vec3 normal = normalize(cross(vec3(0.0, rightHeight - leftHeight, step), vec3(step, upHeight - downHeight, 0.0))) / 2.0;
 
-            vec3 normalizedLightDirection = normalize(lightDirection - worldPos);
+            vec3 normalizedLightDirection = normalize(lpos - worldPos);
             vec3 normalizedNormal = normalize(normal);
-            vec3 normalizedViewDirection = normalize(-viewPosition - worldPos);
+            vec3 normalizedViewDirection = normalize(viewPosition - worldPos);
             vec3 normalizedhalfVector = normalize(normalizedViewDirection + normalizedLightDirection);
 
-            // def working
             float cosTheta = dot(normalizedNormal, normalizedLightDirection);
             float cosRho = max(0.0, dot(normalizedNormal, normalizedhalfVector));
             vec3 specularTerm = (pow(cosRho, specularIntensity)) * specularColor;
             vec3 diffuseTerm = lightIntensity * lightColor * surfaceColor * cosTheta;
-            vec3 ambientTerm = ambientIntensity * ambientLightColor;
+            vec3 ambientTerm = ambientIntensity * surfaceColor;
             vec3 pixelColor;
             if (cosTheta > 0.0) {
                 if (height * h >(13.0 + n1 * 2.0)) {
@@ -676,8 +632,9 @@ export module FragmentModule {
                 pixelColor = ambientTerm;
             }
 
-            pixelColor = pixelColor * sc.rgb;
+            // pixelColor = pixelColor * sc.rgb;
             gl_FragColor = vec4(pixelColor, 1);
+            // gl_FragColor = vec4(normal, 1.0);
             // gl_FragColor = vec4(sc.rgb, 1);
         }
 
