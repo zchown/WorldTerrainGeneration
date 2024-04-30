@@ -15,7 +15,8 @@ export module SceneCreation {
 
         // let foo = shiftingMaterial(scene);
         // let foo = blinnMorph(scene, camera);
-        let foo = bigScene(scene, camera);
+        // let foo = bigScene(scene, camera);
+        let foo = lightTest(scene);
 
 
         var update = function() {
@@ -26,6 +27,21 @@ export module SceneCreation {
 
         return scene;
     };
+
+    const lightTest = (scene: BABYLON.Scene) => {
+        let material = MaterialModule.lightTest(scene);
+        let sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
+        sphere.material = material;
+
+        const curry = function(t: number) {
+            let doubleCurry = function() {
+                material.setFloat("time", t);
+                return curry(t + 0.01);
+            }
+            return doubleCurry;
+        }
+        return curry(0);
+    }
 
     
     const createMaterial = (scene: BABYLON.Scene) => {
@@ -340,4 +356,5 @@ export module SceneCreation {
         }
         return foo(material, texArray, hs, b);
     }
+
 }

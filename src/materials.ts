@@ -161,4 +161,16 @@ export module MaterialModule {
         });
         return material;
     }
+
+    export function lightTest(scene: BABYLON.Scene) {
+        let material = new BABYLON.ShaderMaterial("lightTest", scene, {
+            vertexSource: VertexModule.lightVert,
+            fragmentSource: FragmentModule. flat,
+        },
+        {
+            attributes: ["position"],
+            uniforms: ["color", "time"],
+        });
+        return material;
+    }
 }
