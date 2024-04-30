@@ -645,7 +645,12 @@ export module FragmentModule {
             vec3 ambientTerm = ambientIntensity * ambientLightColor;
             vec3 pixelColor;
             if (cosTheta > 0.0) {
-                pixelColor = diffuseTerm + specularTerm + ambientTerm;
+                if (height * h >(13.0 + n1)) {
+                    pixelColor = diffuseTerm + specularTerm + ambientTerm;
+                } else {
+                    vec3 spec = specularTerm * 0.2;
+                    pixelColor = diffuseTerm + ambientTerm + spec;
+                }
             }
             else {
                 pixelColor = ambientTerm;
