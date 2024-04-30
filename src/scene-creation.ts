@@ -15,8 +15,8 @@ export module SceneCreation {
 
         // let foo = shiftingMaterial(scene);
         // let foo = blinnMorph(scene, camera);
-        // let foo = bigScene(scene, camera);
-        let foo = lightTest(scene);
+        let foo = bigScene(scene, camera);
+        // let foo = lightTest(scene);
 
 
         var update = function() {
@@ -328,7 +328,7 @@ export module SceneCreation {
         material.setFloat("ambientIntensity", ambientIntensity);
         material.setVector3("viewPosition", camera.position);
         material.setVector3("specularColor", specularColor);
-        material.setFloat("specularIntensity", 0.0);
+        material.setFloat("specularIntensity", 2.0);
 
 
         ground.material = material;
