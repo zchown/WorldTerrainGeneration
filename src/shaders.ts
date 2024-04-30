@@ -19,12 +19,13 @@ export module VertexModule {
     export const rotate = `
         precision highp float;
         attribute vec3 position;
+        attribute mat4 worldViewProjection;
         uniform float time;
 
         void main() {
             vec3 newPosition = vec3(position.x * cos(time) - position.z * sin(time), position.y, position.x * sin(time) + position.z * cos(time));
             gl_Position = vec4(newPosition, 1.0);
-            gl_Position = position;
+            gl_Position = worldViewProjection * vec4(position, 1.0);
         }
 
 

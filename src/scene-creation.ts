@@ -31,16 +31,18 @@ export module SceneCreation {
     const lightTest = (scene: BABYLON.Scene) => {
         let material = MaterialModule.lightTest(scene);
         let sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
+        material.setVector3("color", ColorModule.lightBlue);
         sphere.material = material;
+        sphere.position.y = 1;
 
-        const curry = function(t: number) {
+        const curry = function(m: BABYLON.ShaderMaterial, t: number) {
             let doubleCurry = function() {
-                material.setFloat("time", t);
-                return curry(t + 0.01);
+                m.setFloat("time", t);
+                return curry(m, t + 0.01);
             }
             return doubleCurry;
         }
-        return curry(0);
+        return curry(material, 0);
     }
 
     
