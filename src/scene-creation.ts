@@ -274,7 +274,7 @@ export module SceneCreation {
         return foo(material, texArray, hs, b);
     }
     const bigScene = (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera) => {
-        let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 6, subdivisions: 2000}, scene);
+        let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 12, subdivisions: 2000}, scene);
         ground.position.y = 0;
 
 

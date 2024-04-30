@@ -611,7 +611,7 @@ export module FragmentModule {
                 sc = texture2D(snow, vUV);
             }
             else if ((height * h > (11.5 - (n1 * 4.0))) || max(xSlope, ySlope) > 0.4) {
-                sc = texture2D(rock, vUV * 10.0) + n1 * 0.05;
+                sc = texture2D(rock, vUV * 1.0) + n1 * 0.05;
             }
             else {
                 if (texture2D(rnoise, vUV).y > 0.2) {
