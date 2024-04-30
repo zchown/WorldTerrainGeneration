@@ -419,7 +419,7 @@ export module FragmentModule {
 
             vec3 normalizedLightDirection = normalize(lightDirection - worldPos);
             vec3 normalizedNormal = normalize(normal);
-            vec3 normalizedViewDirection = normalize(viewPosition - worldPos);
+            vec3 normalizedViewDirection = normalize(-viewPosition - worldPos);
             vec3 normalizedhalfVector = normalize(normalizedViewDirection + normalizedLightDirection);
 
             // def working
@@ -553,7 +553,7 @@ export module FragmentModule {
 
 
         void main() {
-            float step = 0.01;
+            float step = 0.02;
             float left1 = texture2D(hm1, vec2(vUV.x - step, vUV.y)).r * hs1;
             float right1 = texture2D(hm1, vec2(vUV.x + step, vUV.y)).r * hs1;
             float up1 = texture2D(hm1, vec2(vUV.x, vUV.y - step)).r * hs1;
