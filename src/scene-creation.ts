@@ -356,7 +356,7 @@ export module SceneCreation {
                     m.setFloat("time", time);
 
                     m.setFloat("blend", b2);
-                    return curry(b + 0.001, time + 0.01);
+                    return curry(b + 0.005, time + 0.01);
                 }
                 return doubleCurry;
             }
