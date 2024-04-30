@@ -292,11 +292,11 @@ export module SceneCreation {
         let texArray = [texture1, texture2, texture3, texture4];
         let hs = [10.0, 10.0, 10.0, 2.0];
         let b = 0.0;
-        const lightIntensity = 0.7;
+        const lightIntensity = 0.9;
         let lightDirection = new BABYLON.Vector3(5, 3, 0.7);
-        const ambientIntensity = 0.2;
+        const ambientIntensity = 0.6;
         const lightColor = ColorModule.hexToVec3("#f4f39d");
-        const ambientLightColor = ColorModule.hexToVec3("#892bb6");
+        const ambientLightColor = ColorModule.hexToVec3("#FFFFFF");
         const specularColor = ColorModule.hexToVec3("#FFFFFF");
         let world4x4 = ground.getWorldMatrix();
         let normalMatrix4x4 = new BABYLON.Matrix();

@@ -613,7 +613,7 @@ export module FragmentModule {
 
             vec3 normalizedLightDirection = normalize(lightDirection - worldPos);
             vec3 normalizedNormal = normalize(normal);
-            vec3 normalizedViewDirection = normalize(viewPosition - worldPos);
+            vec3 normalizedViewDirection = normalize(-viewPosition - worldPos);
             vec3 normalizedhalfVector = normalize(normalizedViewDirection + normalizedLightDirection);
 
             // def working
@@ -628,7 +628,6 @@ export module FragmentModule {
             }
             else {
                 pixelColor = ambientTerm;
-                // pixelColor = vec3(1.0, 0.0, 0.0);
             }
 
             pixelColor = pixelColor * sc.rgb;
