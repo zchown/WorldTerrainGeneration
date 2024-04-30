@@ -29,16 +29,17 @@ export module SceneCreation {
     };
 
     const lightTest = (scene: BABYLON.Scene) => {
-        let material = MaterialModule.lightTest(scene);
+        let material = MaterialModule.lightBall(scene);
         let sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
         material.setVector3("color", ColorModule.lightBlue);
         sphere.material = material;
-        sphere.position.y = 1;
+        sphere.position.y = 4;
+        sphere.position.x = 4;
 
         const curry = function(m: BABYLON.ShaderMaterial, t: number) {
             let doubleCurry = function() {
                 m.setFloat("time", t);
-                return curry(m, t + 0.01);
+                return curry(m, t + 0.001);
             }
             return doubleCurry;
         }
@@ -276,7 +277,6 @@ export module SceneCreation {
     const bigScene = (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera) => {
         let ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 12, subdivisions: 2000}, scene);
         ground.position.y = 0;
-
 
         let texture1 = new BABYLON.Texture("./assets/heightmaps/Heightmap_01_Mountain.png", scene);
         let texture2 = new BABYLON.Texture("./assets/heightmaps/Heightmap_06_Canyon.png", scene);

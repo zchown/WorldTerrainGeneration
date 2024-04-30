@@ -199,9 +199,29 @@ export module VertexModule {
         uniform mat4 view;
         uniform mat4 projection;
         uniform vec3 pos;
+        uniform float time;
                 
         void main() {
-            vec4 localPosition = vec4(position, 1.);
+            float rotationAngle = time;
+            vec3 rotationAxis = vec3(1.0, 1.0, 1.0);
+            vec3 fixedPosition = vec3(0.0, 0.0, 0.0);
+            mat3 rotationMatrix = mat3(
+                cos(rotationAngle) + rotationAxis.x * rotationAxis.x * (1.0 - cos(rotationAngle)),
+                rotationAxis.x * rotationAxis.y * (1.0 - cos(rotationAngle)) - rotationAxis.z * sin(rotationAngle),
+                rotationAxis.x * rotationAxis.z * (1.0 - cos(rotationAngle)) + rotationAxis.y * sin(rotationAngle),
+                
+                rotationAxis.y * rotationAxis.x * (1.0 - cos(rotationAngle)) + rotationAxis.z * sin(rotationAngle),
+                cos(rotationAngle) + rotationAxis.y * rotationAxis.y * (1.0 - cos(rotationAngle)),
+                rotationAxis.y * rotationAxis.z * (1.0 - cos(rotationAngle)) - rotationAxis.x * sin(rotationAngle),
+                
+                rotationAxis.z * rotationAxis.x * (1.0 - cos(rotationAngle)) - rotationAxis.y * sin(rotationAngle),
+                rotationAxis.z * rotationAxis.y * (1.0 - cos(rotationAngle)) + rotationAxis.x * sin(rotationAngle),
+                cos(rotationAngle) + rotationAxis.z * rotationAxis.z * (1.0 - cos(rotationAngle))
+            );
+        
+            vec3 newPosition = rotationMatrix * (position - fixedPosition) + fixedPosition;
+
+            vec4 localPosition = vec4(newPosition, 1.);
             vec4 worldPosition = world * localPosition;     
             vec4 viewPosition  = view * worldPosition;
             vec4 clipPosition  = projection * viewPosition;
@@ -607,10 +627,10 @@ export module FragmentModule {
             } else {
                 h = hs2;
             }
-            if (height * h >(13.0 + n1)) {
+            if (height * h >(13.0 + n1 * 2.0)) {
                 sc = texture2D(snow, vUV);
             }
-            else if ((height * h > (11.5 - (n1 * 4.0))) || max(xSlope, ySlope) > 0.4) {
+            else if ((height * h > (12.75 - (n1 * 4.0))) || max(xSlope, ySlope) > 0.5) {
                 sc = texture2D(rock, vUV * 1.0) + n1 * 0.05;
             }
             else {
@@ -645,7 +665,7 @@ export module FragmentModule {
             vec3 ambientTerm = ambientIntensity * ambientLightColor;
             vec3 pixelColor;
             if (cosTheta > 0.0) {
-                if (height * h >(13.0 + n1)) {
+                if (height * h >(13.0 + n1 * 2.0)) {
                     pixelColor = diffuseTerm + specularTerm + ambientTerm;
                 } else {
                     vec3 spec = specularTerm * 0.2;
