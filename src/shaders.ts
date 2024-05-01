@@ -45,6 +45,30 @@ export module VertexModule {
         }
     `;
 
+    export const waterVert = `
+        precision highp float;
+        attribute vec3 position;
+        attribute vec2 uv;
+        uniform mat4 worldViewProjection;
+        uniform sampler2D heightMap;
+        uniform float heightScale;
+        uniform float time;
+
+        varying vec3 vPositionW;
+        varying vec2 vUV;
+        varying vec3 worldPos;
+
+        void main() {
+            vUV = vec2(uv.x + (2.0 * (sin(time) - 0.5)), uv.y + (2.0 * (cos(time) - 0.5))) * 2.0;
+            float height = texture2D(heightMap, vUV).r * heightScale;
+            vec3 newPosition = position;
+            vPositionW = newPosition;
+            worldPos = (vec4(newPosition, 1.) * worldViewProjection).xyz;
+            gl_Position = worldViewProjection * vec4(newPosition, 1.0);
+        }
+
+    `;
+
     export const skyboxVert = `
         attribute vec3 position;
 
@@ -636,6 +660,68 @@ export module FragmentModule {
             gl_FragColor = vec4(pixelColor, 1);
             // gl_FragColor = vec4(normal, 1.0);
             // gl_FragColor = vec4(sc.rgb, 1);
+        }
+
+    `;
+
+    export const waterFrag = `
+        precision highp float;
+
+        uniform sampler2D heightMap;
+
+        uniform vec3 lightDirection;
+        uniform float lightIntensity;
+        uniform vec3 lightColor;
+        uniform vec3 ambientLightColor;
+        uniform float ambientIntensity;
+        uniform vec3 specularColor;
+        uniform float specularIntensity;
+        uniform vec3 viewPosition;
+        uniform float time;
+        uniform vec3 surfaceColor;
+        uniform float heightScale;
+
+        varying vec3 worldNormal;
+        varying vec3 worldPos;
+        varying vec2 vUV;
+        varying vec3 vPositionW;
+
+        void main() {
+            float step = 0.02;
+            float left1 = texture2D(heightMap, vec2(vUV.x - step, vUV.y)).r * heightScale;
+            float right1 = texture2D(heightMap, vec2(vUV.x + step, vUV.y)).r * heightScale;
+            float up1 = texture2D(heightMap, vec2(vUV.x, vUV.y - step)).r * heightScale;
+            float down1 = texture2D(heightMap, vec2(vUV.x, vUV.y + step)).r * heightScale;
+            float rightHeight = right1;
+            float leftHeight = left1;
+            float upHeight = up1;
+            float downHeight = down1;
+            float height = (vPositionW.y);
+
+            vec3 lpos = vec3((sin(time)+ cos(time)) * 5.0, abs((cos(time) - sin(time)) * 2.0) + 2.0, (sin(time) + cos(time)) * 5.0);
+            
+            // magic happens here
+            vec3 normal = normalize(cross(vec3(0.0, rightHeight - leftHeight, step), vec3(step, upHeight - downHeight, 0.0))) / 2.0;
+
+            vec3 normalizedLightDirection = normalize(lpos - worldPos);
+            vec3 normalizedNormal = normalize(normal);
+            vec3 normalizedViewDirection = normalize(viewPosition - worldPos);
+            vec3 normalizedhalfVector = normalize(normalizedViewDirection + normalizedLightDirection);
+
+            float cosTheta = dot(normalizedNormal, normalizedLightDirection);
+            float cosRho = max(0.0, dot(normalizedNormal, normalizedhalfVector));
+            vec3 specularTerm = (pow(cosRho, specularIntensity)) * specularColor;
+            vec3 diffuseTerm = lightIntensity * lightColor * surfaceColor * cosTheta;
+            vec3 ambientTerm = ambientIntensity * surfaceColor;
+            vec3 pixelColor = vec3(0.0, 0.0, 0.0);
+            if (cosTheta > 0.0) {
+                    pixelColor = diffuseTerm + specularTerm + ambientTerm;
+            } else {
+                pixelColor = ambientTerm;
+            }
+            pixelColor = pixelColor * surfaceColor;
+
+            gl_FragColor = vec4(pixelColor, 0.3);
         }
 
     `;

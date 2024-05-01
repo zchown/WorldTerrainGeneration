@@ -16,13 +16,16 @@ export module SceneCreation {
         // let foo = shiftingMaterial(scene);
         // let foo = blinnMorph(scene, camera);
         let foo = bigScene(scene, camera);
+        let bar = createWater(scene, camera);
         let foo2 = lightTest(scene);
 
 
         var update = function() {
             (skybox.material as BABYLON.ShaderMaterial).setVector3("cameraPosition", camera.position);
             foo = foo();
+            bar = bar();
             foo2 = foo2();
+            
         }
 
         scene.registerBeforeRender(update);
@@ -48,6 +51,47 @@ export module SceneCreation {
             return doubleCurry;
         }
         return curry(material, 0);
+    }
+
+    const createWater = (scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera) => {
+        let water = BABYLON.MeshBuilder.CreateBox("water", {width: 12, height: 12, depth: 0.1}, scene);
+        water.subdivide(1000);
+        water.position.y = 0.3;
+        water.rotation.x = Math.PI / 2;
+        let material = MaterialModule.waterMaterial(scene);
+        water.material = material;
+        let tex = new BABYLON.Texture("./assets/textures/water.jpg", scene);
+        material.setTexture("heightMap", tex);
+        material.setFloat("heightScale", 1.5);
+        const lightIntensity = 0.7;
+        let lightDirection = new BABYLON.Vector3(0, 0, 0);
+        const ambientIntensity = 0.5;
+        const lightColor = ColorModule.hexToVec3("#f4f39d");
+        const ambientLightColor = ColorModule.hexToVec3("#FFFFFF");
+        const specularColor = ColorModule.hexToVec3("#FFFFFF");
+        material.setVector3("lightDirection", lightDirection);
+        material.setFloat("lightIntensity", lightIntensity);
+        material.setVector3("lightColor", lightColor);
+        material.setVector3("ambientLightColor", ambientLightColor);
+        material.setFloat("ambientIntensity", ambientIntensity);
+        material.setVector3("viewPosition", camera.position);
+        material.setVector3("specularColor", specularColor);
+        material.setFloat("specularIntensity", 2);
+        material.setVector3("surfaceColor", ColorModule.hexToVec3("#325dad"));
+        material.setFloat("time", 0.0);
+
+        const foo = function(m: BABYLON.ShaderMaterial) {
+            const curry = function(t: number) {
+                const doubleCurry = function() {
+                    m.setFloat("time", t)
+                    return curry(t + 0.0001);
+                }
+                return doubleCurry
+            }
+            return curry(0.0)
+        }
+        return foo(material);
+
     }
 
     
@@ -158,7 +202,7 @@ export module SceneCreation {
         lightBall.position = lightDirection;
         lightBall.material = MaterialModule.lightBall(scene);
         const surfaceColor = ColorModule.hexToVec3("#892bb6");
-        const lightColor = ColorModule.hexToVec3("#f4f39d");
+        const lightColor = ColorModule.hexToVec3("#FFFFFF");
         (lightBall.material as BABYLON.ShaderMaterial).setVector3("color", lightColor);
         (lightBall.material as BABYLON.ShaderMaterial).setVector3("pos", lightDirection);
         lightBall.material.backFaceCulling = false;

@@ -162,4 +162,17 @@ export module MaterialModule {
         return material;
     }
 
+    export function waterMaterial(scene: BABYLON.Scene) {
+        let material = new BABYLON.ShaderMaterial("water", scene, {
+            vertexSource: VertexModule.waterVert,
+            fragmentSource: FragmentModule.waterFrag,
+        },
+        {
+            attributes: ["position", "uv"],
+            uniforms: ["worldViewProjection", "time", "heightScale", "lightDirection", "lightIntensity", "ambientLightColor", "specularColor", "specularIntensity", "viewPosition", "surfaceColor"],
+            samplers: ["heightMap"]
+        });
+        return material;
+    }
+
 }
