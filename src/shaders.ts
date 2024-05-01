@@ -721,7 +721,7 @@ export module FragmentModule {
             }
             pixelColor = pixelColor * surfaceColor;
 
-            gl_FragColor = vec4(pixelColor, 0.3);
+            gl_FragColor = vec4(pixelColor, 0.7);
         }
 
     `;

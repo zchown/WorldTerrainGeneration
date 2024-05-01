@@ -63,6 +63,7 @@ export module SceneCreation {
         let tex = new BABYLON.Texture("./assets/textures/water.jpg", scene);
         material.setTexture("heightMap", tex);
         material.setFloat("heightScale", 1.5);
+        material.alpha = 0.5;
         const lightIntensity = 0.7;
         let lightDirection = new BABYLON.Vector3(0, 0, 0);
         const ambientIntensity = 0.5;
