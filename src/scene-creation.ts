@@ -64,9 +64,9 @@ export module SceneCreation {
         material.setTexture("heightMap", tex);
         material.setFloat("heightScale", 1.5);
         material.alpha = 0.5;
-        const lightIntensity = 0.7;
+        const lightIntensity = 0.9;
         let lightDirection = new BABYLON.Vector3(0, 0, 0);
-        const ambientIntensity = 0.5;
+        const ambientIntensity = 0.8;
         const lightColor = ColorModule.hexToVec3("#f4f39d");
         const ambientLightColor = ColorModule.hexToVec3("#FFFFFF");
         const specularColor = ColorModule.hexToVec3("#FFFFFF");
@@ -85,7 +85,7 @@ export module SceneCreation {
             const curry = function(t: number) {
                 const doubleCurry = function() {
                     m.setFloat("time", t)
-                    return curry(t + 0.0001);
+                    return curry(t + Math.PI / 500);
                 }
                 return doubleCurry
             }
