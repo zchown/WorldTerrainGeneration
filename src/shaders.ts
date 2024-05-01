@@ -59,7 +59,7 @@ export module VertexModule {
         varying vec3 worldPos;
 
         void main() {
-            vUV = (vec2(uv.x, uv.y) + sin(time) / 100.0) * 2.0;
+            vUV = (vec2(uv.x, uv.y) + sin(time) / 100.0) * 4.0;
             float height = texture2D(heightMap, vUV).r * heightScale;
             vec3 newPosition = position;
             vPositionW = newPosition;
