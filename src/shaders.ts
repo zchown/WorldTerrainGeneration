@@ -434,8 +434,7 @@ export module FragmentModule {
 
 
             // magic happens here
-            vec3 normal = normalize(cross(vec3(0.0, rightHeight - leftHeight, step), vec3(step, upHeight - downHeight, 0.0))) / 2.0;
-
+            vec3 normal = normalize(vec3((leftHeight - rightHeight), (upHeight - downHeight), 2.0));
             vec3 normalizedLightDirection = normalize(lightDirection - worldPos);
             vec3 normalizedNormal = normalize(normal);
             vec3 normalizedViewDirection = normalize(viewPosition - worldPos);
@@ -553,6 +552,7 @@ export module FragmentModule {
         uniform sampler2D rnoise2;
         uniform sampler2D tree;
         uniform sampler2D noise;
+        uniform sampler2D gravel;
 
         uniform vec3 lightDirection;
         uniform float lightIntensity;
@@ -608,6 +608,9 @@ export module FragmentModule {
             }
             if (height * h >(13.0 + n1 * 2.0)) {
                 sc = texture2D(snow, vUV);
+            }
+            else if (height * h < (2.8 + n1)){
+                sc = texture2D(gravel, vUV * 10.0);
             }
             else if ((height * h > (12.75 - (n1 * 4.0))) || max(xSlope, ySlope) > 0.5) {
                 sc = texture2D(rock, vUV * 1.0) + n1 * 0.05;
@@ -701,7 +704,7 @@ export module FragmentModule {
             vec3 lpos = vec3((sin(time)+ cos(time)) * 5.0, abs((cos(time) - sin(time)) * 2.0) + 2.0, (sin(time) + cos(time)) * 5.0);
             
             // magic happens here
-            vec3 normal = normalize(cross(vec3(0.0, rightHeight - leftHeight, step), vec3(step, upHeight - downHeight, 0.0))) / 2.0;
+            vec3 normal = normalize(vec3((leftHeight - rightHeight), (upHeight - downHeight), 2.0));
 
             vec3 normalizedLightDirection = normalize(lpos - worldPos);
             vec3 normalizedNormal = normalize(normal);

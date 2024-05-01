@@ -62,11 +62,11 @@ export module SceneCreation {
         water.material = material;
         let tex = new BABYLON.Texture("./assets/textures/water.jpg", scene);
         material.setTexture("heightMap", tex);
-        material.setFloat("heightScale", 1.5);
-        material.alpha = 0.5;
+        material.setFloat("heightScale", 2.0);
+        material.alpha = 0.4;
         const lightIntensity = 0.9;
         let lightDirection = new BABYLON.Vector3(0, 0, 0);
-        const ambientIntensity = 0.8;
+        const ambientIntensity = 0.7;
         const lightColor = ColorModule.hexToVec3("#f4f39d");
         const ambientLightColor = ColorModule.hexToVec3("#FFFFFF");
         const specularColor = ColorModule.hexToVec3("#FFFFFF");
@@ -339,12 +339,13 @@ export module SceneCreation {
         let r = new BABYLON.Texture("./assets/textures/random.png", scene);
         let tree = new BABYLON.Texture("./assets/textures/tree.jpg", scene);
         let r2 = new BABYLON.Texture("./assets/textures/random2.jpg", scene);
-
+        let gravel = new BABYLON.Texture("./assets/textures/gravel.jpg", scene);
 
         let material = MaterialModule.morphTextureBlinn(scene);
         material.setTexture("grass", grass);
         material.setTexture("rock", rock);
         material.setTexture("snow", snow);
+        material.setTexture("gravel", gravel);
         material.setTexture("rnoise", r);
         material.setTexture("rnoise2", r2);
         material.setTexture("tree", tree);

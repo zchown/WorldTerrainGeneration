@@ -1,0 +1,403 @@
+commit 951fa26d7fb73366d03bf9a1727b4af58388271a
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Wed May 1 11:53:49 2024 +0200
+
+    prettier
+
+commit 38cd89a06924c12e981c5999be4a104b969f302a
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Wed May 1 11:47:13 2024 +0200
+
+    prettier
+
+commit 0e0d7ece99193b74fce2bf2e60144ca8f71458b0
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Wed May 1 11:41:03 2024 +0200
+
+    transparent
+
+commit 55cc45a7ced5176a3e56e4e675b86f92aa4e1f32
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Wed May 1 11:33:05 2024 +0200
+
+    water
+
+commit 62f7904595c403a1e86529ff89d0af2b223b4709
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 19:39:44 2024 +0200
+
+    update
+
+commit 13f05cd0ce96553da041fb89cb0923dfba98c679
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 19:34:51 2024 +0200
+
+    fix negaiveD
+
+commit cdde85c94a2e04a4a062d6f5a2f0bb07f64c27aa
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 19:31:20 2024 +0200
+
+    dynamic lighting
+
+commit 3fdf43741dc159e85d1eb8cd406869912d67f03f
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 15:25:56 2024 +0200
+
+    update
+
+commit 1773a626d6b13dfbf7b57337a1b2f33e95a8d964
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 12:11:50 2024 +0200
+
+    better rock
+
+commit d722e49d5eedb62de7da02ea2e52e428d7438055
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 11:10:44 2024 +0200
+
+    variable spec
+
+commit c39b23cdb85d72d3af27fb6fca1a9cfb5c66b650
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 10:19:14 2024 +0200
+
+    specular
+
+commit 3ea16f1d531e27a95c039e7e8f7d06620633973e
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 10:07:19 2024 +0200
+
+    small
+
+commit 1bb045f0c1a827b055745f090e5e282a3d4ffa83
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 09:49:51 2024 +0200
+
+    bug progress
+
+commit 0be4e7067b0b396fcdf90e936643eb8111582825
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 09:42:05 2024 +0200
+
+    light test broken
+
+commit acf57c8b6d38a052949dc76e3f83507629ae54c4
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 09:25:08 2024 +0200
+
+    small update
+
+commit 158b9c99000bb4c83f47b84f61f23b7399782f7b
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 09:18:25 2024 +0200
+
+    fixed shadows
+
+commit 87dd7c6db23c4620481d765fa89cb86d0f23ab22
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Tue Apr 30 09:16:28 2024 +0200
+
+    better but camera light pos still calculating wrong
+
+commit 1c347ed17950b5ae9e61f309e445f5d810a4941b
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 23:48:17 2024 +0200
+
+    it lights, wrong but it lights
+
+commit e89ffdec8014c49726324023e174a444678c4f8a
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 23:41:18 2024 +0200
+
+    all together now lighting definetly broken
+
+commit 2ccd42471bcc8939e399d0f6c70166d367d44930
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 16:46:54 2024 +0200
+
+    quick rock update
+
+commit b6a68b17bbb64c1444ed78995e288f081c2a38cb
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 16:41:42 2024 +0200
+
+    better noise
+
+commit 5a21004d1481d0e32bfbca4f6f96731ad7978879
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 16:36:43 2024 +0200
+
+    more noise
+
+commit fa4ccc30c82231c12c9cca26c55b777cd70adab8
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 16:22:43 2024 +0200
+
+    better texture loading
+
+commit 7426c215363a9cfbedf749ad800aca00cde17ef9
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 13:34:11 2024 +0200
+
+    dynamix texturing
+
+commit dec4e415fb2b667a5413debb4fb4c4ca0e6af6d4
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 01:45:44 2024 +0200
+
+    light ball in place lighting on ground still seems wrong
+
+commit 453ccd71e83e2a3e874b502920cfebe1dd0622be
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 01:37:00 2024 +0200
+
+    light ball material
+
+commit 2c37b0f564c8fc8c49dc9c45871f56a2ba897253
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 01:20:51 2024 +0200
+
+    fixed td issue, new issue ground eaths everything
+
+commit 527925ee905c5c4e857805c90c836a96e0a9f28c
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 01:13:23 2024 +0200
+
+    fixed blinn bugs, still bugs in light sphere
+
+commit 1ad59e5320a6619332b8cd3494f56cda4b685577
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Mon Apr 29 00:27:08 2024 +0200
+
+    bug fixed massive big brain
+
+commit b15784536ee2a1e1442ad7f1914808fc9e49d2c3
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Sun Apr 28 23:34:31 2024 +0200
+
+    blinn phong but has major bug
+
+commit e18fb727e2a346907cb25df3f9c763bf36fff90f
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Sun Apr 28 18:08:33 2024 +0200
+
+    blinn
+
+commit 26714946802f962eac936019412595173987fb72
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Sun Apr 28 18:01:36 2024 +0200
+
+    bug fix
+
+commit d8d65af6f09b795c26a08ed7e71793540a95a894
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Sun Apr 28 17:57:01 2024 +0200
+
+    individual hs control also curry madness
+
+commit dd6cba2da1472498c950cb379ce2730d51cb7ae1
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 26 14:32:32 2024 +0200
+
+    cycle through 4 different textures
+
+commit 911368254af45486d9b128080cf83a149556b234
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 26 12:30:11 2024 +0200
+
+    normalization on slope height
+
+commit d6b96e38dfdedc3df74a49adffad45c7526c4c28
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 26 12:29:22 2024 +0200
+
+    slope height shading
+
+commit 7a70eb6cabf56fd9003ce6ce18960f594ee32785
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 26 12:22:06 2024 +0200
+
+    less noticable shading issue for slope and better coloring
+
+commit 1aa5ebda95566bab1a601f302e7debbbaab07884
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 26 12:13:45 2024 +0200
+
+    slope shading still has bug on edges
+
+commit ba5174ccfad2ca2a253850abd0ef13fda1d59135
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 23:58:08 2024 +0200
+
+    individual hs control
+
+commit a995676195dabeeab53ed3532d7fcb0375b7247d
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 23:47:53 2024 +0200
+
+    ITS AAALLLLLIIIVVEEE
+
+commit 6d721ac16492a739fa99f51b5c442e4920c257d5
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 22:25:02 2024 +0200
+
+    fixed height scaling
+
+commit f17d9ccd492593f316fce5710f19a15bc1089b77
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 22:15:47 2024 +0200
+
+    dark grass and shaders cleanup
+
+commit 5d63922089bbf2dee4fdc9700be138faa8a9caca
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 21:58:36 2024 +0200
+
+    cleanup of scene creation
+
+commit be0983c02e81e8def08b62356f44723304f1137c
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 21:46:02 2024 +0200
+
+    color module
+
+commit 1695da7e41fbbb3c1273c0e06bfdac6bf84edb12
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 16:42:26 2024 +0200
+
+    no hardcoding plz
+
+commit 41ade9e9761b9e47b838e76655761291b325517b
+Merge: 8782da9 c649b70
+Author: Derrell Downey Jr <derrell.downey@gmail.com>
+Date:   Thu Apr 25 16:33:37 2024 +0200
+
+    Merge branch 'main' of https://github.com/zchown/WorldTerrainGeneration
+
+commit 8782da92561c5a2cb55d7476fd221ae9f8317110
+Author: Derrell Downey Jr <derrell.downey@gmail.com>
+Date:   Thu Apr 25 16:33:30 2024 +0200
+
+    added stull
+
+commit c649b70ded3834bf05829838051f4c80a051f3c7
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 16:29:16 2024 +0200
+
+    please die babylon-project
+
+commit 2a3fba874555c4e2c2b5d59c9c6f99d74e127812
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 16:18:44 2024 +0200
+
+    added some normals
+
+commit d9643fc07d6ebbbf80aa525ea6106d6dad277d4f
+Author: Derrell Downey Jr <derrell.downey@gmail.com>
+Date:   Thu Apr 25 16:15:11 2024 +0200
+
+    colors improved
+
+commit ab1aac2699bf8721273d1660cb33580c3b4b358d
+Author: Derrell Downey Jr <derrell.downey@gmail.com>
+Date:   Thu Apr 25 15:55:16 2024 +0200
+
+    added color
+
+commit bc071644b3511c144520fac23809b2fcab0695c4
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 25 15:12:09 2024 +0200
+
+    camera fix
+
+commit 759bfe3d1c9638c43d77d0bece97f4e867ae7524
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Wed Apr 17 14:17:37 2024 +0200
+
+    small updates
+
+commit 9233ebdedcb7ad33dc12977d7089268b1f7b1dcf
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Wed Apr 17 14:10:44 2024 +0200
+
+    succesfully added skybox
+
+commit 861e33b5649c75a725e26157ef3cbd28c5c192fd
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Sat Apr 13 13:45:32 2024 +0200
+
+    succesfull height map vertex shader
+
+commit 9a3a97538e348ca1b4f31f1d65deded715fcc5a9
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Sat Apr 13 13:31:44 2024 +0200
+
+    created color degub material for height map
+
+commit aebb7c79dc57a6ce0c7566182934adc010a6013e
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 12 17:20:06 2024 +0200
+
+    initial attempt to load height map
+
+commit 518ea655baeb0fdf4f95f5039d4b867bb96c2fcd
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 12 12:49:14 2024 +0200
+
+    refactor
+
+commit be00725c7e6ecc16aaaaf1a410e695fdefc24c2f
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 12 11:41:20 2024 +0200
+
+    default shaders created
+
+commit 85ab75281a2136847afcb043a15f36eecaccb0d4
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 12 11:28:53 2024 +0200
+
+    added height map
+
+commit 793aab2f90e4e41f5cbcebfeb898281971a47a3f
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 12 11:20:06 2024 +0200
+
+    improved file structure
+
+commit 0b8c9edb685fea041368361f8ffb0f1e151309bd
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Fri Apr 12 11:18:34 2024 +0200
+
+    added modules
+
+commit 3753b999d71beb8e94cacb2a1f6554c04938114b
+Merge: 05bc14b 0e39f9f
+Author: Derrell Downey Jr <derrell.downey@gmail.com>
+Date:   Thu Apr 11 17:11:13 2024 +0200
+
+    Merge branch 'main' of https://github.com/zchown/WorldTerrainGeneration
+
+commit 05bc14b1dace7072821ee48dfd1da2d1d58851bc
+Author: Derrell Downey Jr <derrell.downey@gmail.com>
+Date:   Thu Apr 11 17:10:48 2024 +0200
+
+    hello
+
+commit 0e39f9f940bd4c62e2faf25c9599152696f2341d
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 11 16:51:21 2024 +0200
+
+    Project cleanup
+
+commit b3804eef5f787d29b33d3d76d4ebfdd78ff4e837
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 11 16:45:15 2024 +0200
+
+    Batman
+
+commit e87e71c75774adbf0e02346de9aa5ff601d84844
+Author: zchown <91749140+zchown@users.noreply.github.com>
+Date:   Thu Apr 11 16:41:44 2024 +0200
+
+    Initial commit
